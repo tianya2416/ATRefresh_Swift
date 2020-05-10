@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Hue
 import Alamofire
 
 class ATRefreshController: ATViewController {

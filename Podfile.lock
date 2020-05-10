@@ -1,0 +1,67 @@
+PODS:
+  - Alamofire (4.9.1)
+  - ATKit_Swift (0.1.3)
+  - DZNEmptyDataSet (1.8.1)
+  - HandyJSON (5.0.1)
+  - Kingfisher (4.10.1)
+  - KVOController (1.2.0)
+  - MJRefresh (3.1.15.2)
+  - Moya (13.0.1):
+    - Moya/Core (= 13.0.1)
+  - Moya/Core (13.0.1):
+    - Alamofire (~> 4.1)
+    - Result (~> 4.1)
+  - Result (4.1.0)
+  - SnapKit (4.2.0)
+  - SwiftyJSON (5.0.0)
+
+DEPENDENCIES:
+  - Alamofire
+  - ATKit_Swift
+  - DZNEmptyDataSet
+  - HandyJSON
+  - Kingfisher
+  - KVOController
+  - MJRefresh (from `https://github.com/CoderLT/MJRefresh.git`)
+  - Moya
+  - SnapKit
+  - SwiftyJSON
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - Alamofire
+    - ATKit_Swift
+    - DZNEmptyDataSet
+    - HandyJSON
+    - Kingfisher
+    - KVOController
+    - Moya
+    - Result
+    - SnapKit
+    - SwiftyJSON
+
+EXTERNAL SOURCES:
+  MJRefresh:
+    :git: https://github.com/CoderLT/MJRefresh.git
+
+CHECKOUT OPTIONS:
+  MJRefresh:
+    :commit: 179a881d703e875e79574860127559472ffeaf73
+    :git: https://github.com/CoderLT/MJRefresh.git
+
+SPEC CHECKSUMS:
+  Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
+  ATKit_Swift: fa8cfd73aa7bce7748a9bf18b3f4d999a502b467
+  DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
+  HandyJSON: d45b8415c501e3affc59ca9762c1197ff0feb646
+  Kingfisher: c148cd7b47ebde9989f6bc7c27dcaa79d81279a0
+  KVOController: d72ace34afea42468329623b3379ab3cd1d286b6
+  MJRefresh: f845c1a10f0309233fb352425475897a5c50e9f0
+  Moya: f4a4b80ff2f8a4ffc208dfb31cd91636622fee6e
+  Result: bd966fac789cc6c1563440b348ab2598cc24d5c7
+  SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
+  SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
+
+PODFILE CHECKSUM: 0087afc6a7725487c3eb829521c8ba5a0fec48fd
+
+COCOAPODS: 1.8.4

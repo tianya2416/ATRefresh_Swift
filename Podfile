@@ -5,10 +5,14 @@ platform :ios, '9.0'
 inhibit_all_warnings!
 
 target :ATRefresh_Swift  do
-    pod 'Hue'
     pod 'SnapKit'
     pod 'ATKit_Swift'
     pod 'Alamofire'
+    pod 'SwiftyJSON'
+    pod 'HandyJSON'
+    pod 'Moya'
+    pod 'Kingfisher'
+    
     pod 'DZNEmptyDataSet'
     pod 'KVOController'
     pod 'MJRefresh', :git => 'https://github.com/CoderLT/MJRefresh.git'
