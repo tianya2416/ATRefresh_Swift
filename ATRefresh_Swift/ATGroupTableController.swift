@@ -7,9 +7,13 @@
 //
 
 import UIKit
-
 class ATGroupTableController: BaseTableViewController {
 
+    convenience init(options:ATRefreshOption) {
+        self.init();
+        self.options = options;
+    }
+    var options : ATRefreshOption = .none;
     lazy var listData : [ATGroupModel] = {
         return []
     }()
@@ -17,11 +21,13 @@ class ATGroupTableController: BaseTableViewController {
         super.viewDidLoad()
         self.showNavTitle(title: "玄幻")
         self.setupEmpty(scrollView: self.tableView);
-        self.setupRefresh(scrollView: self.tableView, options: .defaults);
+        self.setupRefresh(scrollView: self.tableView, options:self.options);
     }
+    
     override func refreshData(page: Int) {
-        ApiMoya.apiMoyaRequest(target: .apiClassify(page: page, size: RefreshPageSize, group: "male", name: "玄幻"), sucesss: { (json) in
-            if page == RefreshPageStart{
+        let size : Int = 40;
+        ApiMoya.apiMoyaRequest(target: .apiClassify(page: page, size: size, group: "male", name: "玄幻"), sucesss: { (json) in
+            if page == 1{
                 self.listData.removeAll();
             }
             var arrayDatas :[ATGroupModel] = [];
@@ -30,7 +36,7 @@ class ATGroupTableController: BaseTableViewController {
             }
             self.listData.append(contentsOf: arrayDatas);
             self.tableView.reloadData();
-            self.endRefresh(more: arrayDatas.count >= RefreshPageSize)
+            self.endRefresh(more: arrayDatas.count >= size)
         }) { (error) in
             self.endRefreshFailure();
         }
@@ -45,8 +51,9 @@ class ATGroupTableController: BaseTableViewController {
         return UITableView.automaticDimension;
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell : TGroupTableViewCell = TGroupTableViewCell.cellForTableView(tableView: tableView, indexPath: indexPath);
+        let cell : ATGroupTableViewCell = ATGroupTableViewCell.cellForTableView(tableView: tableView, indexPath: indexPath);
         cell.model = self.listData[indexPath.row];
         return cell;
     }
 }
+

@@ -15,5 +15,5 @@ target :ATRefresh_Swift  do
     
     pod 'DZNEmptyDataSet'
     pod 'KVOController'
-    pod 'MJRefresh', :git => 'https://github.com/CoderLT/MJRefresh.git'
+    pod 'MJRefresh'
 end

@@ -1,5 +1,5 @@
 //
-//  TGroupTableViewCell.swift
+//  ATGroupTableViewCell.swift
 //  ATRefresh_Swift
 //
 //  Created by wangws1990 on 2020/5/9.
@@ -8,7 +8,7 @@
 
 import UIKit
 import Kingfisher
-class TGroupTableViewCell: UITableViewCell {
+class ATGroupTableViewCell: UITableViewCell {
     @IBOutlet weak var titleLab: UILabel!
     
     @IBOutlet weak var subTitleLab: UILabel!
@@ -17,7 +17,7 @@ class TGroupTableViewCell: UITableViewCell {
     var model : ATGroupModel = ATGroupModel(){
         didSet{
             let item = model ;
-            self.imageV.kf.setImage(with: URL.init(string: item.cover!))
+            self.imageV.setGkImageWithURL(url: item.cover ?? "");
             self.titleLab.text = item.title;
             self.subTitleLab.text = item.shortIntro;
             self.nickNameLab.text = item.author;

@@ -8,15 +8,12 @@
 
 import UIKit
 import Moya
-import ATKit_Swift
 import SwiftyJSON
 
 public enum ApiMoya{
     case apiHome
     case apiClassify(page: Int, size : Int,group:String,name:String)
 }
-
-
 extension ApiMoya : TargetType{
     public var method: Moya.Method {
         return .get;
@@ -64,7 +61,6 @@ extension ApiMoya : TargetType{
             switch result{
             case let .success(respond):
                 let json = JSON(respond.data)
-                print(json);
                 if json["ok"] == true {
                     sucesss(json["books"]);
                 }else{

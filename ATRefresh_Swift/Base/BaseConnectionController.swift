@@ -9,7 +9,7 @@
 import UIKit
 
 
-class BaseConnectionController: BaseRefershViewController {
+class BaseConnectionController: BaseRefershController {
 
     lazy var layout: UICollectionViewFlowLayout = {
         let layout : UICollectionViewFlowLayout = UICollectionViewFlowLayout.init();
@@ -34,6 +34,8 @@ class BaseConnectionController: BaseRefershViewController {
         self.collectionView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview();
         }
+        self.collectionView.backgroundView?.backgroundColor = UIColor.white;
+        self.collectionView.backgroundColor = UIColor.white
     }
 }
 extension BaseConnectionController : UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout{

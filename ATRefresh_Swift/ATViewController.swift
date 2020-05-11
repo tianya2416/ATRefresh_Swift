@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  ATViewController.swift
 //  ATRefresh_Swift
 //
 //  Created by wangws1990 on 2020/5/9.
@@ -7,10 +7,10 @@
 //
 
 import UIKit
-import ATKit_Swift
-class ViewController: BaseTableViewController {
+
+class ATViewController: BaseTableViewController {
     lazy var listData : [String] = {
-        return ["TableView","ConnectionView"]
+        return ["下拉刷新","上拉加载","上拉下拉","无上下拉","ConnectionView"]
     }()
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,8 +18,10 @@ class ViewController: BaseTableViewController {
         self.setupRefresh(scrollView: self.tableView, options: .defaults);
     }
     override func refreshData(page: Int) {
-        self.endRefresh(more: false);
-        self.tableView.reloadData();
+        DispatchQueue.main.asyncAfter(deadline: .now()+2) {
+            self.endRefresh(more: false);
+            self.tableView.reloadData();
+        }
     }
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1;
@@ -38,10 +40,20 @@ class ViewController: BaseTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true);
         let str = self.listData[indexPath.row];
-        if str == "TableView"{
-            UIViewController.rootTopPresentedController().navigationController?.pushViewController(ATGroupTableController(), animated: true)
+        if str == "ConnectionView"{
+            self.navigationController?.pushViewController(ATGroupConnectionController(), animated:true)
         }else{
-            
+            var options : ATRefreshOption = .none;
+            if str == "下拉刷新" {
+                options = ATRefreshOption(rawValue: ATRefreshOption.header.rawValue|ATRefreshOption.autoHeader.rawValue);
+            }else if str == "上拉加载"{
+                options = ATRefreshOption(rawValue: ATRefreshOption.footer.rawValue|ATRefreshOption.autoFooter.rawValue);
+            }else if str == "上拉下拉"{
+                options = .defaults;
+            }else{
+                options = .none;
+            }
+        UIViewController.rootTopPresentedController().navigationController?.pushViewController(ATGroupTableController(options: options), animated: true);
         }
     }
 }

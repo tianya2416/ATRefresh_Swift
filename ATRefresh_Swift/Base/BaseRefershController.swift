@@ -1,5 +1,5 @@
 //
-//  BaseRefershViewController.swift
+//  BaseRefershController.swift
 //  ATRefresh_Swift
 //
 //  Created by wangws1990 on 2020/5/9.
@@ -8,7 +8,9 @@
 
 import UIKit
 import SnapKit
-class BaseRefershViewController: ATRefreshController {
+import ATKit_Swift
+
+class BaseRefershController: ATRefreshController,UIGestureRecognizerDelegate {
     //Example
     private lazy var images: [UIImage] = {
         var images :[UIImage] = [];
@@ -20,40 +22,35 @@ class BaseRefershViewController: ATRefreshController {
         }
         return images;
     }()
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
+        self.edgesForExtendedLayout = [];
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self;
+        self.view.backgroundColor = UIColor.white;
         self.dataSource = self;
     }
+    //MARK:UIGestureRecognizerDelegate
+    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true;
+    }
+    
 }
-extension BaseRefershViewController : ATRefreshDataSource{
-    func refreshFooterData() -> [UIImage] {
+extension BaseRefershController : ATRefreshDataSource{
+    var refreshFooterData: [UIImage] {
         return self.images;
     }
-    
-    func refreshHeaderData() -> [UIImage] {
+    var refreshHeaderData: [UIImage] {
         return self.images;
     }
-    
-    func refreshLoaderData() -> UIImage {
+    var refreshLoaderData: UIImage {
         return UIImage.animatedImage(with:self.images, duration: 0.35) ?? UIImage.init();
     }
     
-    func refreshEmptyData() -> UIImage {
+    var refreshEmptyData: UIImage {
         return UIImage.init(named: "icon_data_empty") ?? UIImage.init();
     }
     
-    func refreshNoNetData() -> UIImage {
-        return UIImage.init(named: "icon_net_error") ?? UIImage.init();
+    var refreshNoNetData: UIImage {
+        return UIImage.init(named: "icon_data_empty") ?? UIImage.init();
     }
-    func refreshEmptyDataToast() -> String {
-        return "Data is empty...";
-    }
-    func refreshNoNetDataToast() -> String {
-        return "Net is error...";
-    }
-    func refreshLoadingDataToast() -> String {
-        return "Datas is loading...";
-    }
-    
-    
 }

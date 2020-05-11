@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BaseTableViewController: BaseRefershViewController {
+class BaseTableViewController: BaseRefershController {
     lazy var tableView : UITableView = {
         let tableView : UITableView = UITableView.init(frame: CGRect.zero, style:.grouped);
         tableView.dataSource = self;
@@ -27,6 +27,8 @@ class BaseTableViewController: BaseRefershViewController {
         self.tableView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
         }
+        self.tableView.backgroundView?.backgroundColor = UIColor.white;
+        self.tableView.backgroundColor = UIColor.white
     }
 }
 extension BaseTableViewController : UITableViewDataSource,UITableViewDelegate{

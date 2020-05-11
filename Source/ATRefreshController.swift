@@ -5,62 +5,50 @@
 //  Created by wangws1990 on 2019/9/30.
 //  Copyright © 2019 wangws1990. All rights reserved.
 //
-
 import UIKit
-import Alamofire
 
-class ATRefreshController: ATViewController {
+class ATRefreshController: UIViewController {
+    
     weak open var scrollView : UIScrollView!;
     weak open var dataSource : ATRefreshDataSource? = nil;
-    public var reachable: Bool{
-        get{
-            return NetworkReachabilityManager.init()!.isReachable;
-        }
-    }
+    public var reachable: Bool = ATRefresh.reachable();
+    
     private var headerImages  : [UIImage]{
         get{
-            return (self.dataSource?.refreshHeaderData()) ?? [];
+            return self.dataSource?.refreshHeaderData ?? [];
         }
     }
     private var footerImages  : [UIImage]{
         get{
-            return (self.dataSource?.refreshFooterData()) ?? [];
+            return (self.dataSource?.refreshFooterData) ?? [];
         }
     }
     private var loadImages    : UIImage{
         get{
-            return (self.dataSource?.refreshLoaderData()) ?? UIImage.init();
+            return (self.dataSource?.refreshLoaderData) ?? UIImage.init();
         }
     }
     private var noNetImage    : UIImage{
         get{
-            return self.dataSource?.refreshNoNetData() ?? UIImage.init();
+            return self.dataSource?.refreshNoNetData ?? UIImage.init();
         }
     }
     private var emptyImage    : UIImage? = UIImage.init();
-    private var _emptyToast   : String!
-    private var emptyToast    : String{
-        get{
-            return (_emptyToast != nil) ?_emptyToast :(self.dataSource?.refreshEmptyDataToast?() ?? "数据空空如也...")
-        }set{
-            
-        }
-    }
+    private var emptyToast    : String?  = "";
     private var noNetToast    : String{
         get{
-            return self.dataSource?.refreshNoNetDataToast?() ?? "无网络连接,请检查网络设置..."
+            return self.dataSource?.refreshNoNetToast?() ?? "Net Error..."
         }
     }
-    
     private var loadToast     : String{
         get{
-            return self.dataSource?.refreshLoadingDataToast?() ?? "数据加载中..."
+            return self.dataSource?.refreshLoaderToast?() ?? "Data Loading..."
         }
     }
     private var currentPage   : Int = 0;
     private var isSetKVO      : Bool = false;
     private var _isRefreshing : Bool = false;
-    private var isRefreshing : Bool{
+    private var isRefreshing  : Bool{
         set{
             _isRefreshing = newValue;
             if self.scrollView != nil {
@@ -73,7 +61,7 @@ class ATRefreshController: ATViewController {
         }
     }
     deinit {
-//        self.scrollView.delegate = nil;
+        print(self.classForCoder,"is deinit");
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,27 +79,24 @@ class ATRefreshController: ATViewController {
             }
             return;
         }
-        var value : Int = options.rawValue & ATRefreshOption.header.rawValue;
-        if value == 1  {
+        if options.rawValue & ATRefreshOption.header.rawValue == 1  {
             let header : MJRefreshGifHeader = MJRefreshGifHeader.init(refreshingTarget: self, refreshingAction: #selector(headerRefreshing));
-            header.stateLabel.isHidden = true;
+            header.stateLabel?.isHidden = true;
             header.isAutomaticallyChangeAlpha = true;
-            header.lastUpdatedTimeLabel.isHidden = true;
+            header.lastUpdatedTimeLabel?.isHidden = true;
             if self.headerImages.count > 0 {
                 header.setImages([self.headerImages.first as Any], for: .idle);
                 header.setImages(self.headerImages, duration: 0.35, for: .refreshing);
             }
-            value = options.rawValue & ATRefreshOption.autoHeader.rawValue;
-            if value == 4 {
+            if options.rawValue & ATRefreshOption.autoHeader.rawValue == 4 {
                 self.headerRefreshing();
             }
             scrollView.mj_header = header;
         }
-        value = options.rawValue & ATRefreshOption.footer.rawValue;
-        if value == 2 {
+        if (options.rawValue & ATRefreshOption.footer.rawValue) == 2 {
             let footer : MJRefreshAutoGifFooter = MJRefreshAutoGifFooter.init(refreshingTarget: self, refreshingAction: #selector(footerRefreshing));
-            footer.triggerAutomaticallyRefreshPercent = -20;
-            footer.stateLabel.isHidden = false;
+            footer.triggerAutomaticallyRefreshPercent = 1;//-20;
+            footer.stateLabel?.isHidden = false;
             footer.labelLeftInset = -22;
             if self.footerImages.count > 0 {
                 footer.setImages([self.footerImages.first as Any], for: .idle);
@@ -122,16 +107,14 @@ class ATRefreshController: ATViewController {
             footer.setTitle("", for: .refreshing);
             footer.setTitle("", for: .willRefresh);
             footer.setTitle("", for: .idle);
-            footer.stateLabel.font = UIFont.systemFont(ofSize: 14)
-            value = options.rawValue & ATRefreshOption.autoFooter.rawValue;
-            if value == 8 {
+            footer.stateLabel?.font = UIFont.systemFont(ofSize: 14)
+            if options.rawValue & ATRefreshOption.autoFooter.rawValue == 8 {
                 if self.currentPage == 0 {
                     self.isRefreshing = true;
                 }
                 self.footerRefreshing();
             }
-            value = options.rawValue & ATRefreshOption.defaultHidden.rawValue;
-            if value == 16 {
+            else if options.rawValue & ATRefreshOption.defaultHidden.rawValue == 16 {
                 footer.isHidden = true
             }
             scrollView.mj_footer = footer;
@@ -152,10 +135,8 @@ class ATRefreshController: ATViewController {
     final func setupEmpty(scrollView:UIScrollView,image:UIImage? = nil,title:String? = nil){
         scrollView.emptyDataSetSource = self;
         scrollView.emptyDataSetDelegate = self;
-        self.emptyImage = (image != nil) ?image!: (self.dataSource?.refreshEmptyData() ?? UIImage.init());
-        if title != nil {
-            self.emptyToast = title!;
-        }
+        self.emptyImage = (image != nil) ?image!: (self.dataSource?.refreshEmptyData ?? UIImage.init());
+        self.emptyToast = (title != nil) ?title!: (self.dataSource?.refreshEmptyToast?() ?? "Data Empty");
         if self.isSetKVO {
             return;
         }
@@ -174,7 +155,7 @@ class ATRefreshController: ATViewController {
         self.currentPage = page;
         DispatchQueue.main.asyncAfter(deadline: .now()+1) {
             if self.scrollView.mj_header != nil{
-                if (self.scrollView?.mj_header.isRefreshing)! || (self.scrollView?.mj_header.isRefreshing)!{
+                if (self.scrollView?.mj_header?.isRefreshing)! || (self.scrollView?.mj_header?.isRefreshing)!{
                     self.endRefreshFailure();
                 }
             }
@@ -189,21 +170,21 @@ class ATRefreshController: ATViewController {
             return;
         }
         if more {
-            self.scrollView?.mj_footer.state = .idle;
-            self.scrollView?.mj_footer.isHidden = false;
+            self.scrollView?.mj_footer?.state = .idle;
+            self.scrollView?.mj_footer?.isHidden = false;
             let footer:MJRefreshAutoStateFooter = self.scrollView?.mj_footer as! MJRefreshAutoStateFooter;
-            footer.stateLabel.textColor = UIColor.init(hex: "666666");
-            footer.stateLabel.font = UIFont.systemFont(ofSize: 14)
+            footer.stateLabel?.textColor = UIColor.init(hex: "666666");
+            footer.stateLabel?.font = UIFont.systemFont(ofSize: 14)
         }else{
-            self.scrollView?.mj_footer.state = .noMoreData;
+            self.scrollView?.mj_footer?.state = .noMoreData;
             let footer:MJRefreshAutoStateFooter = self.scrollView?.mj_footer as! MJRefreshAutoStateFooter;
-            footer.stateLabel.textColor = UIColor.init(hex: "999999");
-            footer.stateLabel.font = UIFont.systemFont(ofSize: 14)
+            footer.stateLabel?.textColor = UIColor.init(hex: "999999");
+            footer.stateLabel?.font = UIFont.systemFont(ofSize: 14)
             DispatchQueue.main.asyncAfter(deadline:.now()+0.01) {
                 let height : CGFloat = (self.scrollView?.contentSize.height)!;
                 let sizeHeight : CGFloat = (self.scrollView?.frame.size.height)!;
                 let res : Bool = (self.currentPage == RefreshPageStart) || (height < sizeHeight);
-                self.scrollView?.mj_footer.isHidden = res;
+                self.scrollView?.mj_footer!.isHidden = res;
             }
         }
     }
@@ -213,20 +194,19 @@ class ATRefreshController: ATViewController {
         }
         self.baseEndRefreshing();
         if self.scrollView.mj_footer != nil {
-                    if (self.scrollView?.mj_footer.isRefreshing)! {
-                self.scrollView?.mj_footer.state = .idle;
+            if (self.scrollView?.mj_footer?.isRefreshing)! {
+                self.scrollView?.mj_footer?.state = .idle;
             }
         }
         self.reloadEmptyData();
-        
     }
     /**
-    @brief 重新加载第一页
+    @brief 加载第一页
     */
     @objc final func headerRefreshing(){
         self.isRefreshing = true;
         if self.scrollView.mj_footer != nil{
-            self.scrollView?.mj_footer.isHidden = true;
+            self.scrollView?.mj_footer?.isHidden = true;
         }
         self.currentPage = RefreshPageStart;
         self.refreshData(page: self.currentPage);
@@ -237,8 +217,8 @@ class ATRefreshController: ATViewController {
     }
     final func baseEndRefreshing(){
         if self.scrollView.mj_header != nil {
-            if (self.scrollView?.mj_header.isRefreshing)! {
-                self.scrollView?.mj_header.endRefreshing();
+            if (self.scrollView?.mj_header?.isRefreshing)! {
+                self.scrollView?.mj_header?.endRefreshing();
             }
         }
         self.isRefreshing = false;
@@ -253,7 +233,7 @@ class ATRefreshController: ATViewController {
 extension ATRefreshController :DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
     //MARK:DZNEmptyDataSetSource
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        var text :String = self.isRefreshing ? self.loadToast : self.emptyToast;
+        var text :String = self.isRefreshing ? self.loadToast : self.emptyToast!;
         var dic : [NSAttributedString.Key : Any ] = [:];
         let font : UIFont = UIFont.systemFont(ofSize: 15);
         let color : UIColor = UIColor.init(hex: "999999")
@@ -270,7 +250,7 @@ extension ATRefreshController :DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
     }
     func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
         let image : UIImage = (self.isRefreshing ? self.loadImages : self.emptyImage)!;
-        return self.reachable ? image : self.dataSource?.refreshNoNetData();
+        return self.reachable ? image : self.dataSource?.refreshNoNetData;
     }
     func emptyDataSetShouldAnimateImageView(_ scrollView: UIScrollView!) -> Bool {
         return false;
@@ -291,8 +271,7 @@ extension ATRefreshController :DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
         return !self.isRefreshing;
     }
     func emptyDataSet(_ scrollView: UIScrollView!, didTap view: UIView!) {
-        if self.isRefreshing == false {
-            self.headerRefreshing();
-        }
+        self.isRefreshing ? nil : self.headerRefreshing();
     }
+
 }
