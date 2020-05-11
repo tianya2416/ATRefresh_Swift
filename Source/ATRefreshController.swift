@@ -25,19 +25,34 @@ class ATRefreshController: UIViewController {
     }
     private var loadImages    : UIImage{
         get{
-            return (self.dataSource?.refreshLoaderData) ?? UIImage.init();
+            let images = (self.dataSource?.refreshLoaderData) ?? [];
+            return UIImage.animatedImage(with: images, duration: 0.35)!
         }
     }
-    private var noNetImage    : UIImage{
+    private var errorImage    : UIImage{
         get{
-            return self.dataSource?.refreshNoNetData ?? UIImage.init();
+            return self.dataSource?.refreshErrorData ?? UIImage.init();
         }
     }
-    private var emptyImage    : UIImage? = UIImage.init();
-    private var emptyToast    : String?  = "";
-    private var noNetToast    : String{
+    private var _emptyImage   : UIImage?
+    private var emptyImage    : UIImage{
         get{
-            return self.dataSource?.refreshNoNetToast?() ?? "Net Error..."
+            return _emptyImage ?? (self.dataSource?.refreshEmptyData ?? UIImage.init());
+        }set{
+            _emptyImage = newValue;
+        }
+    }
+    private var _emptyToast   : String?
+    private var emptyToast    : String{
+        get{
+            return _emptyToast ?? (self.dataSource?.refreshEmptyToast?() ?? "Data Empty...")
+        }set{
+            _emptyToast = newValue;
+        }
+    }
+    private var errorToast    : String{
+        get{
+            return self.dataSource?.refreshErrorToast?() ?? "Net Error..."
         }
     }
     private var loadToast     : String{
@@ -47,17 +62,17 @@ class ATRefreshController: UIViewController {
     }
     private var currentPage   : Int = 0;
     private var isSetKVO      : Bool = false;
-    private var _isRefreshing : Bool = false;
-    private var isRefreshing  : Bool{
+    private var _refreshing : Bool = false;
+    private var refreshing  : Bool{
         set{
-            _isRefreshing = newValue;
+            _refreshing = newValue;
             if self.scrollView != nil {
                 if self.scrollView!.isEmptyDataSetVisible {
                     self.reloadEmptyData();
                 }
             }
         }get{
-            return _isRefreshing;
+            return _refreshing;
         }
     }
     deinit {
@@ -110,7 +125,7 @@ class ATRefreshController: UIViewController {
             footer.stateLabel?.font = UIFont.systemFont(ofSize: 14)
             if options.rawValue & ATRefreshOption.autoFooter.rawValue == 8 {
                 if self.currentPage == 0 {
-                    self.isRefreshing = true;
+                    self.refreshing = true;
                 }
                 self.footerRefreshing();
             }
@@ -135,8 +150,12 @@ class ATRefreshController: UIViewController {
     final func setupEmpty(scrollView:UIScrollView,image:UIImage? = nil,title:String? = nil){
         scrollView.emptyDataSetSource = self;
         scrollView.emptyDataSetDelegate = self;
-        self.emptyImage = (image != nil) ?image!: (self.dataSource?.refreshEmptyData ?? UIImage.init());
-        self.emptyToast = (title != nil) ?title!: (self.dataSource?.refreshEmptyToast?() ?? "Data Empty");
+        if title != nil {
+            self.emptyToast = title!;
+        }
+        if image != nil {
+            self.emptyImage = image!;
+        }
         if self.isSetKVO {
             return;
         }
@@ -204,7 +223,7 @@ class ATRefreshController: UIViewController {
     @brief 加载第一页
     */
     @objc final func headerRefreshing(){
-        self.isRefreshing = true;
+        self.refreshing = true;
         if self.scrollView.mj_footer != nil{
             self.scrollView?.mj_footer?.isHidden = true;
         }
@@ -221,7 +240,7 @@ class ATRefreshController: UIViewController {
                 self.scrollView?.mj_header?.endRefreshing();
             }
         }
-        self.isRefreshing = false;
+        self.refreshing = false;
     }
     @objc final func reloadEmptyData(){
         if self.scrollView != nil {
@@ -233,15 +252,12 @@ class ATRefreshController: UIViewController {
 extension ATRefreshController :DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
     //MARK:DZNEmptyDataSetSource
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        var text :String = self.isRefreshing ? self.loadToast : self.emptyToast!;
+        let text :String = self.refreshing ? self.loadToast : ((!self.reachable ? self.errorToast : self.emptyToast));
         var dic : [NSAttributedString.Key : Any ] = [:];
         let font : UIFont = UIFont.systemFont(ofSize: 15);
         let color : UIColor = UIColor.init(hex: "999999")
         dic.updateValue(font, forKey: .font);
         dic.updateValue(color, forKey: .foregroundColor)
-        if self.reachable == false {
-            text = self.noNetToast;
-        }
         let att : NSAttributedString = NSAttributedString.init(string:"\r\n"+text, attributes:(dic));
         return att;
     }
@@ -249,8 +265,8 @@ extension ATRefreshController :DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
         return nil;
     }
     func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
-        let image : UIImage = (self.isRefreshing ? self.loadImages : self.emptyImage)!;
-        return self.reachable ? image : self.dataSource?.refreshNoNetData;
+        let image : UIImage = (self.refreshing ? self.loadImages : self.emptyImage);
+        return self.reachable ? image : self.errorImage;
     }
     func emptyDataSetShouldAnimateImageView(_ scrollView: UIScrollView!) -> Bool {
         return false;
@@ -268,10 +284,10 @@ extension ATRefreshController :DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
         return true;
     }
     func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView!) -> Bool {
-        return !self.isRefreshing;
+        return !self.refreshing;
     }
     func emptyDataSet(_ scrollView: UIScrollView!, didTap view: UIView!) {
-        self.isRefreshing ? nil : self.headerRefreshing();
+        self.refreshing ? nil : self.headerRefreshing();
     }
 
 }

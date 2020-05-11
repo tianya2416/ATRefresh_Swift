@@ -32,12 +32,12 @@ struct ATRefreshOption :OptionSet {
 @objc protocol ATRefreshDataSource : NSObjectProtocol {
     var refreshFooterData:[UIImage] { get}
     var refreshHeaderData:[UIImage] { get}
-    var refreshLoaderData:UIImage   { get}
+    var refreshLoaderData:[UIImage] { get}
     var refreshEmptyData :UIImage   { get}
-    var refreshNoNetData :UIImage   { get}
+    var refreshErrorData :UIImage   { get}
     
     @objc optional func refreshLoaderToast()    ->String;
-    @objc optional func refreshNoNetToast()     ->String;
+    @objc optional func refreshErrorToast()     ->String;
     @objc optional func refreshEmptyToast()     ->String;
 }
 

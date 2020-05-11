@@ -10,7 +10,7 @@ import UIKit
 
 class ATViewController: BaseTableViewController {
     lazy var listData : [String] = {
-        return ["下拉刷新","上拉加载","上拉下拉","无上下拉","ConnectionView"]
+        return []
     }()
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,6 +19,7 @@ class ATViewController: BaseTableViewController {
     }
     override func refreshData(page: Int) {
         DispatchQueue.main.asyncAfter(deadline: .now()+2) {
+            self.listData = ["下拉刷新","上拉加载","上拉下拉","无上下拉","ConnectionView"];
             self.endRefresh(more: false);
             self.tableView.reloadData();
         }

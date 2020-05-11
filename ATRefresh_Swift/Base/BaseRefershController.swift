@@ -36,21 +36,30 @@ class BaseRefershController: ATRefreshController,UIGestureRecognizerDelegate {
     
 }
 extension BaseRefershController : ATRefreshDataSource{
+    var refreshLoaderData: [UIImage] {
+        return self.images;
+    }
     var refreshFooterData: [UIImage] {
         return self.images;
     }
     var refreshHeaderData: [UIImage] {
         return self.images;
     }
-    var refreshLoaderData: UIImage {
-        return UIImage.animatedImage(with:self.images, duration: 0.35) ?? UIImage.init();
-    }
     
     var refreshEmptyData: UIImage {
         return UIImage.init(named: "icon_data_empty") ?? UIImage.init();
     }
     
-    var refreshNoNetData: UIImage {
+    var refreshErrorData: UIImage {
         return UIImage.init(named: "icon_data_empty") ?? UIImage.init();
+    }
+    func refreshEmptyToast() -> String {
+        return "数据空空如也"
+    }
+    func refreshLoaderToast() -> String {
+        return "数据加载中"
+    }
+    func refreshErrorToast() -> String {
+        return "网络出现问题了"
     }
 }
