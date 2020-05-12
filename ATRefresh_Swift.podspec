@@ -19,6 +19,8 @@ Pod::Spec.new do |s|
   s.dependency       'KVOController'
   s.dependency       'MJRefresh'
   s.dependency       'Alamofire'
+  
+  s.public_header_files = 'Source/ATRefresh_Swift-Bridging-Header.h'
 end
 
 
