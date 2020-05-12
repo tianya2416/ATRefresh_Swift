@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ATRefresh_Swift'
-  s.version          = '0.0.1'
+  s.version          = '0.0.2'
   s.summary          = 'Some classes and class category commonly used in iOS rapid development'
   s.description      = <<-DESC
                        Some classes and class category commonly used in iOS rapid development.
@@ -13,14 +13,15 @@ Pod::Spec.new do |s|
   s.swift_version    = '5.0'
   s.platform         = :ios, '9.0'
   s.requires_arc     = true
-  s.source_files     = 'Source/*.{h,m,swift}'
+  s.source_files     = 'Source/*.{h,swift}'
   
-  s.dependency       'DZNEmptyDataSet'
-  s.dependency       'KVOController'
-  s.dependency       'MJRefresh'
-  s.dependency       'Alamofire'
+  s.dependency       'DZNEmptyDataSet', '~> 1.8.1'
+  s.dependency       'KVOController','~> 1.2.0'
+  s.dependency       'MJRefresh','~> 3.4.3'
+  s.dependency       'Alamofire', '~> 4.9.1'
   
   s.public_header_files = 'Source/ATRefresh_Swift-Bridging-Header.h'
+  
 end
 
 
