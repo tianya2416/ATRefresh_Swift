@@ -19,6 +19,7 @@
 		0F4C5DB82466AA970030D2C4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0F4C5DB62466AA970030D2C4 /* LaunchScreen.storyboard */; };
 		0F4C5DC52466AB9F0030D2C4 /* ATRefreshController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F4C5DC22466AB9F0030D2C4 /* ATRefreshController.swift */; };
 		0F4C5DD42466BC460030D2C4 /* ATRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F4C5DD32466BC460030D2C4 /* ATRefresh.swift */; };
+		0F761EF2246BF79C00696378 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 0F761EF1246BF79C00696378 /* README.md */; };
 		0FAD776D246937E200B0B01A /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FAD776A246937E200B0B01A /* BaseTableViewController.swift */; };
 		0FAD776E246937E200B0B01A /* BaseConnectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FAD776B246937E200B0B01A /* BaseConnectionController.swift */; };
 		0FAD77712469386200B0B01A /* BaseRefershController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FAD77702469386200B0B01A /* BaseRefershController.swift */; };
@@ -46,6 +47,7 @@
 		0F4C5DC22466AB9F0030D2C4 /* ATRefreshController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ATRefreshController.swift; sourceTree = "<group>"; };
 		0F4C5DC62466B1260030D2C4 /* ATRefresh_Swift-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ATRefresh_Swift-Bridging-Header.h"; sourceTree = "<group>"; };
 		0F4C5DD32466BC460030D2C4 /* ATRefresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATRefresh.swift; sourceTree = "<group>"; };
+		0F761EF1246BF79C00696378 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		0FAD776A246937E200B0B01A /* BaseTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTableViewController.swift; sourceTree = "<group>"; };
 		0FAD776B246937E200B0B01A /* BaseConnectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseConnectionController.swift; sourceTree = "<group>"; };
 		0FAD77702469386200B0B01A /* BaseRefershController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseRefershController.swift; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 		0F4C5D9F2466AA970030D2C4 = {
 			isa = PBXGroup;
 			children = (
+				0F761EF1246BF79C00696378 /* README.md */,
 				0F174A2E246929C500A1265F /* ATRefresh_Swift.podspec */,
 				0F4C5DBF2466AB830030D2C4 /* Source */,
 				0F4C5DAA2466AA970030D2C4 /* ATRefresh_Swift */,
@@ -215,6 +218,7 @@
 				0F1A7EE9246909C5003CB706 /* ATGroupCollectionViewCell.xib in Resources */,
 				0F174A2F246929C500A1265F /* ATRefresh_Swift.podspec in Resources */,
 				8F3745442466FFF9001151DF /* ATGroupTableViewCell.xib in Resources */,
+				0F761EF2246BF79C00696378 /* README.md in Resources */,
 				0F4C5DB82466AA970030D2C4 /* LaunchScreen.storyboard in Resources */,
 				0F4C5DB52466AA970030D2C4 /* Assets.xcassets in Resources */,
 				0F4C5DB32466AA970030D2C4 /* Main.storyboard in Resources */,
