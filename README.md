@@ -22,23 +22,24 @@
     self.setupEmpty(scrollView: self.tableView);
     self.setupRefresh(scrollView: self.tableView, options:.defaults);
    
-    For Example
-   
-     [ATTool getData:@"https://api.zhuishushenqi.com/book/by-categories" params:params success:^(id  _Nonnull object) {
-            if (page == 1) {
-                [self.listData removeAllObjects];
-            }
-            NSArray *datas = [NSArray modelArrayWithClass:ATModel.class json:object];
-            if (datas.count > 0) {
-                [self.listData addObjectsFromArray:datas];
-            }
-            [self.tableView reloadData];
-            
-            [self endRefresh:datas.count >= count];//判断是否有下一页
-       } failure:^(NSError * _Nonnull error) {
-       
-            [self endRefreshFailure];
-       }];
+     For Example
+     let size : Int = 40;
+     ApiMoya.apiMoyaRequest(target: .apiClassify(page: page, size: size, group: "male", name: "玄幻"), sucesss: { (json) in
+         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {//看清楚动画
+             if page == 1{
+                 self.listData.removeAll();
+             }
+             var arrayDatas :[ATGroupModel] = [];
+             if let data = [ATGroupModel].deserialize(from: json.rawString()){
+                 arrayDatas = data as! [ATGroupModel]
+             }
+             self.listData.append(contentsOf: arrayDatas);
+             self.tableView.reloadData();
+             self.endRefresh(more: arrayDatas.count >= size)
+         }
+     }) { (error) in
+         self.endRefreshFailure();
+     }
        
 3、ATRefresh_ObjectC版本:
     

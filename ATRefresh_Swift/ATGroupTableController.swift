@@ -27,7 +27,7 @@ class ATGroupTableController: BaseTableViewController {
     override func refreshData(page: Int) {
         let size : Int = 40;
         ApiMoya.apiMoyaRequest(target: .apiClassify(page: page, size: size, group: "male", name: "玄幻"), sucesss: { (json) in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {//看清除动画
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {//看清楚动画
                 if page == 1{
                     self.listData.removeAll();
                 }

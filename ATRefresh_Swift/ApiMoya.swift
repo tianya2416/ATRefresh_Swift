@@ -58,18 +58,20 @@ extension ApiMoya : TargetType{
     public static func apiMoyaRequest(target: ApiMoya,sucesss:@escaping ((_ object : JSON) ->()),failure:@escaping ((_ error : String) ->())){
         let moya = MoyaProvider<ApiMoya>();
         moya.request(target) { (result) in
-            switch result{
-            case let .success(respond):
-                let json = JSON(respond.data)
-                if json["ok"] == true {
-                    sucesss(json["books"]);
-                }else{
-                    failure("code != 0")
+            DispatchQueue.main.async {
+                switch result{
+                case let .success(respond):
+                    let json = JSON(respond.data)
+                    if json["ok"] == true {
+                        sucesss(json["books"]);
+                    }else{
+                        failure("code != 0")
+                    }
+                    break;
+                case let .failure(error):
+                    failure(error.errorDescription!)
+                    break;
                 }
-                break;
-            case let .failure(error):
-                failure(error.errorDescription!)
-                break;
             }
         }
     }
