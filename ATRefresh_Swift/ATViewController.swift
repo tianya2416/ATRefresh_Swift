@@ -7,7 +7,9 @@
 //
 
 import UIKit
-
+//  pod lib lint ATRefresh_Swift.podspec  --allow-warnings --sources='https://github.com/CocoaPods/Specs.git'
+//pod trunk push --allow-warnings --sources='https://github.com/CocoaPods/Specs.git'
+//  pod trunk push ATRefresh_Swift.podspec  --allow-warnings --sources='https://github.com/CocoaPods/Specs.git'
 class ATViewController: BaseTableViewController {
     lazy var listData : [String] = {
         return []

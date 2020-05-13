@@ -272,7 +272,7 @@ extension ATRefreshController :DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
         return false;
     }
     func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
-        return -NAVI_BAR_HIGHT/2
+        return -(ATRefresh.NAVI_HIGHT())/2
     }
     func spaceHeight(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
         return 1;

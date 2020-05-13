@@ -13,11 +13,6 @@ import Alamofire
 public let RefreshPageStart : Int = (1)
 public let RefreshPageSize  : Int = (20)
 
-public let iPhone_X        : Bool       = (ATRefresh.iPhone_X());//iPhoneX
-public let STATUS_BAR_HIGHT: CGFloat    = (iPhone_X ? 44: 20)//iPhoneX 44
-public let NAVI_BAR_HIGHT  : CGFloat    = (iPhone_X ? 88: 64)//iPhoneX 88
-public let TAB_BAR_ADDING  : CGFloat    = (iPhone_X ? 34 : 0)//iPhoneX 34
-
 struct ATRefreshOption :OptionSet {
     public var rawValue: Int
     static var none          : ATRefreshOption{return ATRefreshOption(rawValue: 0)}
@@ -40,8 +35,7 @@ struct ATRefreshOption :OptionSet {
     @objc optional func refreshErrorToast()     ->String;
     @objc optional func refreshEmptyToast()     ->String;
 }
-
-public class ATRefresh : NSObject{
+class ATRefresh : NSObject{
     class func reachable() -> Bool{
         return NetworkReachabilityManager.init()!.isReachable;
     }
@@ -58,9 +52,12 @@ public class ATRefresh : NSObject{
               return false;
            };
     }
+    class func NAVI_HIGHT() -> CGFloat{
+        return iPhone_X() ? 88 : 64;
+    }
     
 }
-public extension UIImage{
+extension UIImage{
     class func imageWithColor(color:UIColor) -> UIImage{
           let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
           UIGraphicsBeginImageContext(rect.size)
@@ -72,7 +69,7 @@ public extension UIImage{
           return image!
       }
 }
-public extension UIColor {
+extension UIColor {
     convenience init(hex string: String) {
       var hex = string.hasPrefix("#")
         ? String(string.dropFirst())
