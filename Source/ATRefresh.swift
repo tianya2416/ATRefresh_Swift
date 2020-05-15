@@ -10,30 +10,30 @@ import Foundation
 import UIKit
 import Alamofire
 
-public let RefreshPageStart : Int = (1)
-public let RefreshPageSize  : Int = (20)
-
-struct ATRefreshOption :OptionSet {
-    public var rawValue: Int
-    static var none          : ATRefreshOption{return ATRefreshOption(rawValue: 0)}
-    static var header        : ATRefreshOption{return ATRefreshOption(rawValue: 1<<0)};
-    static var footer        : ATRefreshOption{return ATRefreshOption(rawValue: 1<<1)};
-    static var autoHeader    : ATRefreshOption{return ATRefreshOption(rawValue: 1<<2)};
-    static var autoFooter    : ATRefreshOption{return ATRefreshOption(rawValue: 1<<3)};
-    static var defaultHidden : ATRefreshOption{return ATRefreshOption(rawValue: 1<<4)};
-    static var defaults      : ATRefreshOption{return ATRefreshOption(rawValue: header.rawValue|autoHeader.rawValue|footer.rawValue|defaultHidden.rawValue)};
+public struct ATRefreshOption :OptionSet {
+    public let rawValue : Int
+    public init(rawValue: Int) {
+        self.rawValue = rawValue
+    }
+    public static var none          : ATRefreshOption{return ATRefreshOption(rawValue: 0)}
+    public static var header        : ATRefreshOption{return ATRefreshOption(rawValue: 1<<0)};
+    public static var footer        : ATRefreshOption{return ATRefreshOption(rawValue: 1<<1)};
+    public static var autoHeader    : ATRefreshOption{return ATRefreshOption(rawValue: 1<<2)};
+    public static var autoFooter    : ATRefreshOption{return ATRefreshOption(rawValue: 1<<3)};
+    public static var defaultHidden : ATRefreshOption{return ATRefreshOption(rawValue: 1<<4)};
+    public static var defaults      : ATRefreshOption{return ATRefreshOption(rawValue: header.rawValue|autoHeader.rawValue|footer.rawValue|defaultHidden.rawValue)};
 }
 
-@objc protocol ATRefreshDataSource : NSObjectProtocol {
+@objc public protocol ATRefreshDataSource : NSObjectProtocol {
     var refreshFooterData:[UIImage] { get}
     var refreshHeaderData:[UIImage] { get}
     var refreshLoaderData:[UIImage] { get}
     var refreshEmptyData :UIImage   { get}
     var refreshErrorData :UIImage   { get}
     
-    @objc optional func refreshLoaderToast()    ->String;
-    @objc optional func refreshErrorToast()     ->String;
-    @objc optional func refreshEmptyToast()     ->String;
+    @objc optional var refreshLoaderToast : String {get}
+    @objc optional var refreshErrorToast  : String {get}
+    @objc optional var refreshEmptyToast  : String {get}
 }
 class ATRefresh : NSObject{
     class func reachable() -> Bool{
@@ -52,7 +52,7 @@ class ATRefresh : NSObject{
               return false;
            };
     }
-    class func NAVI_HIGHT() -> CGFloat{
+    class func Navi_Bar() -> CGFloat{
         return iPhone_X() ? 88 : 64;
     }
     

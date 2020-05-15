@@ -6,12 +6,14 @@
 //  Copyright © 2019 wangws1990. All rights reserved.
 //
 import UIKit
-
+private let RefreshPageStart : Int = (1)
+private let RefreshPageSize  : Int = (20)
 open class ATRefreshController: UIViewController {
     
     weak open var scrollView : UIScrollView!;
-    weak var dataSource : ATRefreshDataSource? = nil;
-    public var reachable: Bool = ATRefresh.reachable();
+    weak open var dataSource : ATRefreshDataSource? = nil;
+    
+    private var reachable: Bool = ATRefresh.reachable();
     
     private var headerImages  : [UIImage]{
         get{
@@ -45,19 +47,19 @@ open class ATRefreshController: UIViewController {
     private var _emptyToast   : String?
     private var emptyToast    : String{
         get{
-            return _emptyToast ?? (self.dataSource?.refreshEmptyToast?() ?? "Data Empty...")
+            return _emptyToast ?? (self.dataSource?.refreshEmptyToast ?? "Data Empty...")
         }set{
             _emptyToast = newValue;
         }
     }
     private var errorToast    : String{
         get{
-            return self.dataSource?.refreshErrorToast?() ?? "Net Error..."
+            return self.dataSource?.refreshErrorToast ?? "Net Error..."
         }
     }
     private var loadToast     : String{
         get{
-            return self.dataSource?.refreshLoaderToast?() ?? "Data Loading..."
+            return self.dataSource?.refreshLoaderToast ?? "Data Loading..."
         }
     }
     private var currentPage   : Int = 0;
@@ -78,7 +80,7 @@ open class ATRefreshController: UIViewController {
     deinit {
         print(self.classForCoder,"is deinit");
     }
-    override public func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
     }
     /**
@@ -86,7 +88,7 @@ open class ATRefreshController: UIViewController {
     @param scrollView 刷新控件所在scrollView
     @param option 刷新空间样式
     */
-    final func setupRefresh(scrollView:UIScrollView,options:ATRefreshOption){
+    open func setupRefresh(scrollView:UIScrollView,options:ATRefreshOption){
         self.scrollView = scrollView;
         if options.rawValue == ATRefreshOption.none.rawValue {
             if self.responds(to: #selector(headerRefreshing)) {
@@ -144,10 +146,10 @@ open class ATRefreshController: UIViewController {
     @param image 空界面图片
     @param title 空界面标题
     */
-    final func setupEmpty(scrollView:UIScrollView){
+    open func setupEmpty(scrollView:UIScrollView){
         self.setupEmpty(scrollView: scrollView, image:nil, title:nil)
     }
-    final func setupEmpty(scrollView:UIScrollView,image:UIImage? = nil,title:String? = nil){
+    open func setupEmpty(scrollView:UIScrollView,image:UIImage? = nil,title:String? = nil){
         scrollView.emptyDataSetSource = self;
         scrollView.emptyDataSetDelegate = self;
         if title != nil {
@@ -170,7 +172,7 @@ open class ATRefreshController: UIViewController {
     @brief 分页请求一开始page = 1
     @param page 当前页码
     */
-    public func refreshData(page:Int){
+    open func refreshData(page:Int){
         self.currentPage = page;
         DispatchQueue.main.asyncAfter(deadline: .now()+1) {
             if self.scrollView.mj_header != nil{
@@ -183,7 +185,7 @@ open class ATRefreshController: UIViewController {
     /**
     @brief 分页加载成功 是否有下一页数据
     */
-    final func endRefresh(more:Bool){
+    open func endRefresh(more:Bool){
         self.baseEndRefreshing();
         if self.scrollView.mj_footer == nil {
             return;
@@ -207,7 +209,7 @@ open class ATRefreshController: UIViewController {
             }
         }
     }
-    final func endRefreshFailure(){
+    open func endRefreshFailure(){
         if self.currentPage > RefreshPageStart {
             self.currentPage = self.currentPage - 1;
         }
@@ -222,7 +224,7 @@ open class ATRefreshController: UIViewController {
     /**
     @brief 加载第一页
     */
-    @objc final func headerRefreshing(){
+    @objc open func headerRefreshing(){
         self.refreshing = true;
         if self.scrollView.mj_footer != nil{
             self.scrollView?.mj_footer?.isHidden = true;
@@ -230,7 +232,7 @@ open class ATRefreshController: UIViewController {
         self.currentPage = RefreshPageStart;
         self.refreshData(page: self.currentPage);
     }
-    @objc final func footerRefreshing(){
+    @objc open func footerRefreshing(){
         self.currentPage = self.currentPage + 1;
         self.refreshData(page: self.currentPage);
     }
@@ -272,7 +274,7 @@ extension ATRefreshController :DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
         return false;
     }
     public func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
-        return -(ATRefresh.NAVI_HIGHT())/2
+        return -(ATRefresh.Navi_Bar())/2
     }
     public func spaceHeight(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
         return 1;

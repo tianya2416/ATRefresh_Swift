@@ -13,12 +13,12 @@
 		0F1A7EE5246904E5003CB706 /* ATGroupConnectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F1A7EE4246904E5003CB706 /* ATGroupConnectionController.swift */; };
 		0F1A7EE8246909C5003CB706 /* ATGroupCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F1A7EE6246909C5003CB706 /* ATGroupCollectionViewCell.swift */; };
 		0F1A7EE9246909C5003CB706 /* ATGroupCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0F1A7EE7246909C5003CB706 /* ATGroupCollectionViewCell.xib */; };
+		0F41C128246E3FBF00C5C49B /* ATRefreshController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F41C127246E3FBF00C5C49B /* ATRefreshController.swift */; };
 		0F4C5DAC2466AA970030D2C4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F4C5DAB2466AA970030D2C4 /* AppDelegate.swift */; };
 		0F4C5DB02466AA970030D2C4 /* ATViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F4C5DAF2466AA970030D2C4 /* ATViewController.swift */; };
 		0F4C5DB32466AA970030D2C4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0F4C5DB12466AA970030D2C4 /* Main.storyboard */; };
 		0F4C5DB52466AA970030D2C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0F4C5DB42466AA970030D2C4 /* Assets.xcassets */; };
 		0F4C5DB82466AA970030D2C4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0F4C5DB62466AA970030D2C4 /* LaunchScreen.storyboard */; };
-		0F4C5DC52466AB9F0030D2C4 /* ATRefreshController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F4C5DC22466AB9F0030D2C4 /* ATRefreshController.swift */; };
 		0F4C5DD42466BC460030D2C4 /* ATRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F4C5DD32466BC460030D2C4 /* ATRefresh.swift */; };
 		0F761EF2246BF79C00696378 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 0F761EF1246BF79C00696378 /* README.md */; };
 		0FAD776D246937E200B0B01A /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FAD776A246937E200B0B01A /* BaseTableViewController.swift */; };
@@ -37,6 +37,7 @@
 		0F1A7EE4246904E5003CB706 /* ATGroupConnectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATGroupConnectionController.swift; sourceTree = "<group>"; };
 		0F1A7EE6246909C5003CB706 /* ATGroupCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATGroupCollectionViewCell.swift; sourceTree = "<group>"; };
 		0F1A7EE7246909C5003CB706 /* ATGroupCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ATGroupCollectionViewCell.xib; sourceTree = "<group>"; };
+		0F41C127246E3FBF00C5C49B /* ATRefreshController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ATRefreshController.swift; sourceTree = "<group>"; };
 		0F4C5DA82466AA970030D2C4 /* ATRefresh_Swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ATRefresh_Swift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0F4C5DAB2466AA970030D2C4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0F4C5DAF2466AA970030D2C4 /* ATViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATViewController.swift; sourceTree = "<group>"; };
@@ -44,7 +45,6 @@
 		0F4C5DB42466AA970030D2C4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0F4C5DB72466AA970030D2C4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0F4C5DB92466AA970030D2C4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0F4C5DC22466AB9F0030D2C4 /* ATRefreshController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ATRefreshController.swift; sourceTree = "<group>"; };
 		0F4C5DC62466B1260030D2C4 /* ATRefresh_Swift-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ATRefresh_Swift-Bridging-Header.h"; sourceTree = "<group>"; };
 		0F4C5DD32466BC460030D2C4 /* ATRefresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATRefresh.swift; sourceTree = "<group>"; };
 		0F761EF1246BF79C00696378 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -122,7 +122,7 @@
 			children = (
 				0F4C5DC62466B1260030D2C4 /* ATRefresh_Swift-Bridging-Header.h */,
 				0F4C5DD32466BC460030D2C4 /* ATRefresh.swift */,
-				0F4C5DC22466AB9F0030D2C4 /* ATRefreshController.swift */,
+				0F41C127246E3FBF00C5C49B /* ATRefreshController.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -274,11 +274,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0F41C128246E3FBF00C5C49B /* ATRefreshController.swift in Sources */,
 				8F78F7522466F20900AD5F64 /* ApiMoya.swift in Sources */,
 				0F1A7EE32468F8F5003CB706 /* ATLoad.swift in Sources */,
 				0F1A7EE5246904E5003CB706 /* ATGroupConnectionController.swift in Sources */,
 				0F4C5DB02466AA970030D2C4 /* ATViewController.swift in Sources */,
-				0F4C5DC52466AB9F0030D2C4 /* ATRefreshController.swift in Sources */,
 				0F4C5DAC2466AA970030D2C4 /* AppDelegate.swift in Sources */,
 				0FAD776D246937E200B0B01A /* BaseTableViewController.swift in Sources */,
 				0FAD776E246937E200B0B01A /* BaseConnectionController.swift in Sources */,

@@ -12,6 +12,9 @@ import ATKit_Swift
 
 class BaseRefershController: ATRefreshController,UIGestureRecognizerDelegate {
     //Example
+    deinit {
+        print(self.classForCoder);
+    }
     private lazy var images: [UIImage] = {
         var images :[UIImage] = [];
         for i in 0...35{
@@ -29,11 +32,14 @@ class BaseRefershController: ATRefreshController,UIGestureRecognizerDelegate {
         self.view.backgroundColor = UIColor.white;
         self.dataSource = self;
     }
+    
     //MARK:UIGestureRecognizerDelegate
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         return true;
     }
-    
+    override func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
+        return -ATRefresh.Navi_Bar()/2;
+    }
 }
 extension BaseRefershController : ATRefreshDataSource{
     var refreshLoaderData: [UIImage] {
@@ -53,13 +59,14 @@ extension BaseRefershController : ATRefreshDataSource{
     var refreshErrorData: UIImage {
         return UIImage.init(named: "icon_data_empty") ?? UIImage.init();
     }
-    func refreshEmptyToast() -> String {
+    var refreshEmptyToast: String{
         return "数据空空如也"
     }
-    func refreshLoaderToast() -> String {
+    var refreshLoaderToast: String{
         return "数据加载中"
     }
-    func refreshErrorToast() -> String {
+    var refreshErrorToast: String{
         return "网络出现问题了"
     }
 }
+
