@@ -7,10 +7,10 @@
 //
 import UIKit
 
-public class ATRefreshController: UIViewController {
+open class ATRefreshController: UIViewController {
     
     weak open var scrollView : UIScrollView!;
-    weak  var dataSource : ATRefreshDataSource? = nil;
+    weak var dataSource : ATRefreshDataSource? = nil;
     public var reachable: Bool = ATRefresh.reachable();
     
     private var headerImages  : [UIImage]{
