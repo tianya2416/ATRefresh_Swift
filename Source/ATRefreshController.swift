@@ -7,10 +7,10 @@
 //
 import UIKit
 
-class ATRefreshController: UIViewController {
+public class ATRefreshController: UIViewController {
     
     weak open var scrollView : UIScrollView!;
-    weak open var dataSource : ATRefreshDataSource? = nil;
+    weak  var dataSource : ATRefreshDataSource? = nil;
     public var reachable: Bool = ATRefresh.reachable();
     
     private var headerImages  : [UIImage]{
@@ -78,7 +78,7 @@ class ATRefreshController: UIViewController {
     deinit {
         print(self.classForCoder,"is deinit");
     }
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
     }
     /**
@@ -251,7 +251,7 @@ class ATRefreshController: UIViewController {
 }
 extension ATRefreshController :DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
     //MARK:DZNEmptyDataSetSource
-    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+    public func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         let text :String = self.refreshing ? self.loadToast : ((!self.reachable ? self.errorToast : self.emptyToast));
         var dic : [NSAttributedString.Key : Any ] = [:];
         let font : UIFont = UIFont.systemFont(ofSize: 15);
@@ -261,32 +261,32 @@ extension ATRefreshController :DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
         let att : NSAttributedString = NSAttributedString.init(string:"\r\n"+text, attributes:(dic));
         return att;
     }
-    func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+    public func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         return nil;
     }
-    func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
+    public func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
         let image : UIImage = (self.refreshing ? self.loadImages : self.emptyImage);
         return self.reachable ? image : self.errorImage;
     }
-    func emptyDataSetShouldAnimateImageView(_ scrollView: UIScrollView!) -> Bool {
+    public func emptyDataSetShouldAnimateImageView(_ scrollView: UIScrollView!) -> Bool {
         return false;
     }
-    func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
+    public func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
         return -(ATRefresh.NAVI_HIGHT())/2
     }
-    func spaceHeight(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
+    public func spaceHeight(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
         return 1;
     }
-    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
+    public func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
         return true;
     }
-    func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView!) -> Bool {
+    public func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView!) -> Bool {
         return true;
     }
-    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView!) -> Bool {
+    public func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView!) -> Bool {
         return !self.refreshing;
     }
-    func emptyDataSet(_ scrollView: UIScrollView!, didTap view: UIView!) {
+    public func emptyDataSet(_ scrollView: UIScrollView!, didTap view: UIView!) {
         self.refreshing ? nil : self.headerRefreshing();
     }
 

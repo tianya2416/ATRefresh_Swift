@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ATRefresh_Swift'
-  s.version          = '0.0.3'
+  s.version          = '0.0.4'
   s.summary          = 'Some classes and class category commonly used in iOS rapid development'
   s.description      = <<-DESC
                        Some classes and class category commonly used in iOS rapid development.

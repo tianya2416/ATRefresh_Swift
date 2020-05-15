@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A5FC592498C8ACCC6934CDB /* Pods_ATRefresh_Swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B058A2C2925034C97260224C /* Pods_ATRefresh_Swift.framework */; };
 		0F174A2F246929C500A1265F /* ATRefresh_Swift.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 0F174A2E246929C500A1265F /* ATRefresh_Swift.podspec */; };
 		0F1A7EE32468F8F5003CB706 /* ATLoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F1A7EE22468F8F5003CB706 /* ATLoad.swift */; };
 		0F1A7EE5246904E5003CB706 /* ATGroupConnectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F1A7EE4246904E5003CB706 /* ATGroupConnectionController.swift */; };
@@ -23,7 +24,6 @@
 		0FAD776D246937E200B0B01A /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FAD776A246937E200B0B01A /* BaseTableViewController.swift */; };
 		0FAD776E246937E200B0B01A /* BaseConnectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FAD776B246937E200B0B01A /* BaseConnectionController.swift */; };
 		0FAD77712469386200B0B01A /* BaseRefershController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FAD77702469386200B0B01A /* BaseRefershController.swift */; };
-		7F93761F4D4D4E2BD3B2781A /* libPods-ATRefresh_Swift.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 477A55ED88FFA752775E51DF /* libPods-ATRefresh_Swift.a */; };
 		8F2B845E2466FBC8007246E7 /* ATGroupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2B845D2466FBC8007246E7 /* ATGroupModel.swift */; };
 		8F3745432466FFF9001151DF /* ATGroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F3745412466FFF9001151DF /* ATGroupTableViewCell.swift */; };
 		8F3745442466FFF9001151DF /* ATGroupTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8F3745422466FFF9001151DF /* ATGroupTableViewCell.xib */; };
@@ -53,12 +53,12 @@
 		0FAD77702469386200B0B01A /* BaseRefershController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseRefershController.swift; sourceTree = "<group>"; };
 		309332AEFDDDD320D444D575 /* Pods-ATRefresh_Swift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ATRefresh_Swift.release.xcconfig"; path = "Target Support Files/Pods-ATRefresh_Swift/Pods-ATRefresh_Swift.release.xcconfig"; sourceTree = "<group>"; };
 		402C6A30A62D3C2DE516353B /* Pods-ATRefresh_Swift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ATRefresh_Swift.debug.xcconfig"; path = "Target Support Files/Pods-ATRefresh_Swift/Pods-ATRefresh_Swift.debug.xcconfig"; sourceTree = "<group>"; };
-		477A55ED88FFA752775E51DF /* libPods-ATRefresh_Swift.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ATRefresh_Swift.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F2B845D2466FBC8007246E7 /* ATGroupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATGroupModel.swift; sourceTree = "<group>"; };
 		8F3745412466FFF9001151DF /* ATGroupTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATGroupTableViewCell.swift; sourceTree = "<group>"; };
 		8F3745422466FFF9001151DF /* ATGroupTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ATGroupTableViewCell.xib; sourceTree = "<group>"; };
 		8F78F7512466F20900AD5F64 /* ApiMoya.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiMoya.swift; sourceTree = "<group>"; };
 		8F78F7532466F5D200AD5F64 /* ATGroupTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATGroupTableController.swift; sourceTree = "<group>"; };
+		B058A2C2925034C97260224C /* Pods_ATRefresh_Swift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ATRefresh_Swift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,7 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7F93761F4D4D4E2BD3B2781A /* libPods-ATRefresh_Swift.a in Frameworks */,
+				0A5FC592498C8ACCC6934CDB /* Pods_ATRefresh_Swift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,7 +140,7 @@
 		6705E8EAA2B1E769A2E7BC0A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				477A55ED88FFA752775E51DF /* libPods-ATRefresh_Swift.a */,
+				B058A2C2925034C97260224C /* Pods_ATRefresh_Swift.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -165,7 +165,7 @@
 				0F4C5DA42466AA970030D2C4 /* Sources */,
 				0F4C5DA52466AA970030D2C4 /* Frameworks */,
 				0F4C5DA62466AA970030D2C4 /* Resources */,
-				4C11F46300B64BC1FB8232B3 /* [CP] Copy Pods Resources */,
+				C14F573F82F60B4CF46C72EF /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -228,23 +228,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4C11F46300B64BC1FB8232B3 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ATRefresh_Swift/Pods-ATRefresh_Swift-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ATRefresh_Swift/Pods-ATRefresh_Swift-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ATRefresh_Swift/Pods-ATRefresh_Swift-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		9E581D09D5FB5B145AC12C8A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -265,6 +248,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C14F573F82F60B4CF46C72EF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ATRefresh_Swift/Pods-ATRefresh_Swift-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ATRefresh_Swift/Pods-ATRefresh_Swift-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ATRefresh_Swift/Pods-ATRefresh_Swift-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
