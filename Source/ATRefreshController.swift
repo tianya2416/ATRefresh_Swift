@@ -7,7 +7,6 @@
 //
 import UIKit
 private let RefreshPageStart : Int = (1)
-private let RefreshPageSize  : Int = (20)
 open class ATRefreshController: UIViewController {
     
     weak open var scrollView : UIScrollView!;
@@ -253,7 +252,7 @@ open class ATRefreshController: UIViewController {
 }
 extension ATRefreshController :DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
     //MARK:DZNEmptyDataSetSource
-    public func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+    open func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         let text :String = self.refreshing ? self.loadToast : ((!self.reachable ? self.errorToast : self.emptyToast));
         var dic : [NSAttributedString.Key : Any ] = [:];
         let font : UIFont = UIFont.systemFont(ofSize: 15);
@@ -263,32 +262,32 @@ extension ATRefreshController :DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
         let att : NSAttributedString = NSAttributedString.init(string:"\r\n"+text, attributes:(dic));
         return att;
     }
-    public func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+    open func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         return nil;
     }
-    public func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
+    open func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
         let image : UIImage = (self.refreshing ? self.loadImages : self.emptyImage);
         return self.reachable ? image : self.errorImage;
     }
-    public func emptyDataSetShouldAnimateImageView(_ scrollView: UIScrollView!) -> Bool {
+    open func emptyDataSetShouldAnimateImageView(_ scrollView: UIScrollView!) -> Bool {
         return false;
     }
-    public func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
+    open func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
         return -(ATRefresh.Navi_Bar())/2
     }
-    public func spaceHeight(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
+    open func spaceHeight(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
         return 1;
     }
-    public func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
+    open func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
         return true;
     }
-    public func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView!) -> Bool {
+    open func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView!) -> Bool {
         return true;
     }
-    public func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView!) -> Bool {
+    open func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView!) -> Bool {
         return !self.refreshing;
     }
-    public func emptyDataSet(_ scrollView: UIScrollView!, didTap view: UIView!) {
+    open func emptyDataSet(_ scrollView: UIScrollView!, didTap view: UIView!) {
         self.refreshing ? nil : self.headerRefreshing();
     }
 

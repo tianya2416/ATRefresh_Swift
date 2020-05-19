@@ -62,6 +62,7 @@ extension ApiMoya : TargetType{
                 switch result{
                 case let .success(respond):
                     let json = JSON(respond.data)
+                    print(json);
                     if json["ok"] == true {
                         sucesss(json["books"]);
                     }else{
