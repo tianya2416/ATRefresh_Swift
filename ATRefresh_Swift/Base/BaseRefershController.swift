@@ -13,51 +13,51 @@ import ATKit_Swift
 class BaseRefershController: ATRefreshController,UIGestureRecognizerDelegate {
     //Example
     deinit {
-        print(self.classForCoder);
+        print(self.classForCoder)
     }
     private lazy var images: [UIImage] = {
-        var images :[UIImage] = [];
+        var images :[UIImage] = []
         for i in 0...35{
             let image = UIImage.init(named:String("下拉loading_00") + String(i < 10 ? ("0"+String(i)) : String(i)));
             if image != nil {
-                images.append(image!);
+                images.append(image!)
             }
         }
-        return images;
+        return images
     }()
     override public func viewDidLoad() {
         super.viewDidLoad()
-        self.edgesForExtendedLayout = [];
-        self.navigationController?.interactivePopGestureRecognizer?.delegate = self;
-        self.view.backgroundColor = UIColor.white;
-        self.dataSource = self;
+        self.edgesForExtendedLayout = []
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+        self.view.backgroundColor = UIColor.white
+        self.dataSource = self
     }
     
     //MARK:UIGestureRecognizerDelegate
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true;
+        return true
     }
     override func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
-        return -ATRefresh.Navi_Bar()/2;
+        return -ATRefresh.Navi_Bar()/2
     }
 }
 extension BaseRefershController : ATRefreshDataSource{
     var refreshLoaderData: [UIImage] {
-        return self.images;
+        return self.images
     }
     var refreshFooterData: [UIImage] {
-        return self.images;
+        return self.images
     }
     var refreshHeaderData: [UIImage] {
-        return self.images;
+        return self.images
     }
     
     var refreshEmptyData: UIImage {
-        return UIImage.init(named: "icon_data_empty") ?? UIImage.init();
+        return UIImage.init(named: "icon_data_empty") ?? UIImage.init()
     }
     
     var refreshErrorData: UIImage {
-        return UIImage.init(named: "icon_data_empty") ?? UIImage.init();
+        return UIImage.init(named: "icon_data_empty") ?? UIImage.init()
     }
     var refreshEmptyToast: String{
         return "数据空空如也"

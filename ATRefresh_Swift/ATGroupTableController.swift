@@ -41,7 +41,7 @@ class ATGroupTableController: BaseTableViewController {
                 self.endRefresh(more: arrayDatas.count >= size)
             }
         }) { (error) in
-            self.endRefreshFailure();
+            self.endRefreshFailure(error:error);
         }
     }
     override func numberOfSections(in tableView: UITableView) -> Int {

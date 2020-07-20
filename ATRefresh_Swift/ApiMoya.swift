@@ -26,7 +26,7 @@ extension ApiMoya : TargetType{
     public var task: Task {
             switch self {
             case let .apiClassify(page:page, size: size, group: group, name: name):
-                return .requestParameters(parameters: ["gender":group,"major":name,"start":String(page),"limit":String(size),"type":"hot","minor":""], encoding: URLEncoding.default);
+                return .requestParameters(parameters: [:], encoding: URLEncoding.default);
             case .apiHome:
                 return .requestParameters(parameters: [:], encoding:URLEncoding.default);
             }
@@ -64,9 +64,10 @@ extension ApiMoya : TargetType{
                     let json = JSON(respond.data)
                     print(json);
                     if json["ok"] == true {
-                        sucesss(json["books"]);
+                        sucesss(json["books"])
                     }else{
-                        failure("code != 0")
+                    
+                        failure((json["msg"].rawString() ?? ""))
                     }
                     break;
                 case let .failure(error):
