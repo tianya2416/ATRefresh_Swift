@@ -43,4 +43,4 @@
        
 3、ATRefresh_ObjectC版本:
     
-[Swift版本](https://github.com/tianya2416/ATRefresh_ObjectC.git)
+[ObjectC版本](https://github.com/tianya2416/ATRefresh_ObjectC.git)
