@@ -235,8 +235,11 @@ open class ATRefreshController: UIViewController {
         self.refreshData(page: self.currentPage)
     }
     @objc open func footerRefreshing(){
-        self.currentPage = self.currentPage + 1;
-        self.refreshData(page: self.currentPage)
+        if self.refreshing == false {
+            self.refreshing = true
+            self.currentPage = self.currentPage + 1;
+            self.refreshData(page: self.currentPage)
+        }
     }
     final func baseEndRefreshing(){
         if self.scrollView.mj_header != nil {
