@@ -88,12 +88,12 @@ open class ATRefreshController: UIViewController {
     @param option 刷新空间样式
     */
     open func setupRefresh(scrollView:UIScrollView,options:ATRefreshOption){
-        self.scrollView = scrollView;
+        self.scrollView = scrollView
         if options.rawValue == ATRefreshOption.none.rawValue {
             if self.responds(to: #selector(headerRefreshing)) {
-                self.headerRefreshing();
+                self.headerRefreshing()
             }
-            return;
+            return
         }
         if options.rawValue & ATRefreshOption.header.rawValue == 1  {
             let header : MJRefreshGifHeader = MJRefreshGifHeader.init(refreshingTarget: self, refreshingAction: #selector(headerRefreshing))
@@ -139,7 +139,7 @@ open class ATRefreshController: UIViewController {
     }
     /**
     设置空界面显示, 如果需要定制化 请实现协议 DZNEmptyDataSetSource, DZNEmptyDataSetDelegate
-    tableView或者CollectionView数据reload后, 空界面展示可自动触发, 如需强制刷新, 请调用 [scrollView reloadEmptyDataSet];
+    tableView或者CollectionView数据reload后, 空界面展示可自动触发, 如需强制刷新, 请调用 [scrollView reloadEmptyDataSet]
     
     @param scrollView 空界面所在scrollView
     @param image 空界面图片
@@ -158,14 +158,14 @@ open class ATRefreshController: UIViewController {
             self.emptyImage = image!
         }
         if self.isSetKVO {
-            return;
+            return
         }
         self.isSetKVO = true
         weak var weakSelf = self
         self.kvoController.observe(scrollView, keyPaths: ["contentSize","contentInset"], options: .new) { (observer, object, change) in
             NSObject.cancelPreviousPerformRequests(withTarget:weakSelf as Any, selector: #selector(weakSelf!.reloadEmptyData), object:nil)
             weakSelf!.perform(#selector(weakSelf!.reloadEmptyData), with:nil, afterDelay: 0.01)
-        };
+        }
     }
     /**
     @brief 分页请求一开始page = 1
@@ -176,7 +176,7 @@ open class ATRefreshController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now()+1) {
             if self.scrollView.mj_header != nil{
                 if (self.scrollView?.mj_header?.isRefreshing)! || (self.scrollView?.mj_header?.isRefreshing)!{
-                    self.endRefreshFailure();
+                    self.endRefreshFailure()
                 }
             }
         }
@@ -187,7 +187,7 @@ open class ATRefreshController: UIViewController {
     open func endRefresh(more:Bool){
         self.baseEndRefreshing()
         if self.scrollView.mj_footer == nil {
-            return;
+            return
         }
         if more {
             self.scrollView?.mj_footer?.state = .idle
@@ -202,9 +202,9 @@ open class ATRefreshController: UIViewController {
             footer.stateLabel?.font = UIFont.systemFont(ofSize: 14)
             DispatchQueue.main.asyncAfter(deadline:.now()+0.01) {
                 let height : CGFloat = (self.scrollView?.contentSize.height)!
-                let sizeHeight : CGFloat = (self.scrollView?.frame.size.height)!;
+                let sizeHeight : CGFloat = (self.scrollView?.frame.size.height)!
                 let res : Bool = (self.currentPage == RefreshPageStart) || (height < sizeHeight)
-                self.scrollView?.mj_footer!.isHidden = res;
+                self.scrollView?.mj_footer!.isHidden = res
             }
         }
     }
@@ -213,15 +213,15 @@ open class ATRefreshController: UIViewController {
             self.emptyToast = error ?? ""
         }
         if self.currentPage > RefreshPageStart {
-            self.currentPage = self.currentPage - 1;
+            self.currentPage = self.currentPage - 1
         }
-        self.baseEndRefreshing();
+        self.baseEndRefreshing()
         if self.scrollView.mj_footer != nil {
             if (self.scrollView?.mj_footer?.isRefreshing)! {
-                self.scrollView?.mj_footer?.state = .idle;
+                self.scrollView?.mj_footer?.state = .idle
             }
         }
-        self.reloadEmptyData();
+        self.reloadEmptyData()
     }
     /**
     @brief 加载第一页
@@ -229,7 +229,7 @@ open class ATRefreshController: UIViewController {
     @objc open func headerRefreshing(){
         self.refreshing = true
         if self.scrollView.mj_footer != nil{
-            self.scrollView?.mj_footer?.isHidden = true;
+            self.scrollView?.mj_footer?.isHidden = true
         }
         self.currentPage = RefreshPageStart
         self.refreshData(page: self.currentPage)
@@ -237,7 +237,7 @@ open class ATRefreshController: UIViewController {
     @objc open func footerRefreshing(){
         if self.refreshing == false {
             self.refreshing = true
-            self.currentPage = self.currentPage + 1;
+            self.currentPage = self.currentPage + 1
             self.refreshData(page: self.currentPage)
         }
     }
@@ -247,7 +247,7 @@ open class ATRefreshController: UIViewController {
                 self.scrollView?.mj_header?.endRefreshing()
             }
         }
-        self.refreshing = false;
+        self.refreshing = false
     }
     @objc final func reloadEmptyData(){
         if self.scrollView != nil {
@@ -259,11 +259,11 @@ open class ATRefreshController: UIViewController {
 extension ATRefreshController :DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
     //MARK:DZNEmptyDataSetSource
     open func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let text :String = self.refreshing ? self.loadToast : ((!self.reachable ? self.errorToast : self.emptyToast));
+        let text :String = self.refreshing ? self.loadToast : ((!self.reachable ? self.errorToast : self.emptyToast))
         var dic : [NSAttributedString.Key : Any ] = [:]
         let font : UIFont = UIFont.systemFont(ofSize: 15)
         let color : UIColor = UIColor.init(hex: "999999")
-        dic.updateValue(font, forKey: .font);
+        dic.updateValue(font, forKey: .font)
         dic.updateValue(color, forKey: .foregroundColor)
         let att : NSAttributedString = NSAttributedString.init(string:"\r\n"+text, attributes:(dic))
         return att
