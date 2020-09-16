@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 import Alamofire
-
+import Reachability
 public struct ATRefreshOption :OptionSet {
     public let rawValue : Int
     public init(rawValue: Int) {

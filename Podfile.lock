@@ -11,6 +11,7 @@ PODS:
   - Moya/Core (13.0.1):
     - Alamofire (~> 4.1)
     - Result (~> 4.1)
+  - ReachabilitySwift (5.0.0)
   - Result (4.1.0)
   - SnapKit (4.2.0)
   - SwiftyJSON (5.0.0)
@@ -23,6 +24,7 @@ DEPENDENCIES:
   - KVOController
   - MJRefresh
   - Moya
+  - ReachabilitySwift
   - SnapKit
   - SwiftyJSON
 
@@ -36,6 +38,7 @@ SPEC REPOS:
     - KVOController
     - MJRefresh
     - Moya
+    - ReachabilitySwift
     - Result
     - SnapKit
     - SwiftyJSON
@@ -49,10 +52,11 @@ SPEC CHECKSUMS:
   KVOController: d72ace34afea42468329623b3379ab3cd1d286b6
   MJRefresh: 53e3e3219f204425ee6d3e62e8733d3295944cd6
   Moya: f4a4b80ff2f8a4ffc208dfb31cd91636622fee6e
+  ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   Result: bd966fac789cc6c1563440b348ab2598cc24d5c7
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: fb288bd273905eef1262eb785e2e8f43e40c654a
+PODFILE CHECKSUM: 1bb67aa5b620036ce2dc66d3339af25c9d20e0d2
 
 COCOAPODS: 1.10.0.rc.1
