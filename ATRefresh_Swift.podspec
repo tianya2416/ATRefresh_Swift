@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.requires_arc     = true
   s.source_files     = 'Source/*.{h,swift}'
   
-  s.dependency       'Alamofire', '~> 5.2.1'
+  s.dependency       'Alamofire'
   s.dependency       'DZNEmptyDataSet', '~> 1.8.1'
   s.dependency       'KVOController','~> 1.2.0'
   s.dependency       'MJRefresh','~> 3.4.3'
