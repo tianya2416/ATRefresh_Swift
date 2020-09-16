@@ -13,7 +13,7 @@ class BaseTableViewController: BaseRefershController {
         let tableView : UITableView = UITableView.init(frame: CGRect.zero, style:.grouped);
         tableView.dataSource = self;
         tableView.delegate = self;
-        tableView.rowHeight = UITableViewAutomaticDimension;
+        tableView.rowHeight = UITableView.automaticDimension;
         tableView.estimatedRowHeight = 60;
         tableView.keyboardDismissMode = .onDrag;
         tableView.separatorStyle = .none;
