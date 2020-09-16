@@ -7,7 +7,6 @@ inhibit_all_warnings!
 target :ATRefresh_Swift  do
     pod 'SnapKit'
     pod 'ATKit_Swift'
-    pod 'Alamofire'
     pod 'SwiftyJSON'
     pod 'HandyJSON'
     pod 'Moya'

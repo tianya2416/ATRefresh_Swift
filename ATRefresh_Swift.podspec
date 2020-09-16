@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ATRefresh_Swift'
-  s.version          = '0.1.0'
+  s.version          = '0.1.1'
   s.summary          = 'Some classes and class category commonly used in iOS rapid development'
   s.description      = <<-DESC
                        Some classes and class category commonly used in iOS rapid development.
@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.requires_arc     = true
   s.source_files     = 'Source/*.{h,swift}'
   
-  s.dependency       'Alamofire', '~> 4.9.1'
+  s.dependency       'ReachabilitySwift', '~> 5.0.0'
   s.dependency       'DZNEmptyDataSet', '~> 1.8.1'
   s.dependency       'KVOController','~> 1.2.0'
   s.dependency       'MJRefresh','~> 3.4.3'

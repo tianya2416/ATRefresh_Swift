@@ -26,21 +26,23 @@ extension ApiMoya : TargetType{
     public var task: Task {
             switch self {
             case let .apiClassify(page:page, size: size, group: group, name: name):
-                return .requestParameters(parameters: [:], encoding: URLEncoding.default);
+                return .requestParameters(parameters: ["gender":group,"major":name,"start":String(page),"limit":String(size),"type":"hot","minor":""], encoding: URLEncoding.default);
             case .apiHome:
                 return .requestParameters(parameters: [:], encoding:URLEncoding.default);
             }
+
     }
     
     public var headers: [String : String]? {
-        return [
-            "Accept": "*/*",
-            "Accept-Encoding": "br, gzip, deflate",
-            "Accept-Language": "en-CN;q=1, zh-Hans-CN;q=0.9",
-            "Connection": "keep-alive",
-            "Content-Type": "application/x-www-form-urlencoded;charset=utf8",
-            "Host": "mjappaz.yefu365.com",
-        ]
+        return [:]
+//        return [
+//            "Accept": "*/*",
+//            "Accept-Encoding": "br, gzip, deflate",
+//            "Accept-Language": "en-CN;q=1, zh-Hans-CN;q=0.9",
+//            "Connection": "keep-alive",
+//            "Content-Type": "application/x-www-form-urlencoded;charset=utf8",
+//            "Host": "mjappaz.yefu365.com",
+//        ]
     }
     
     public var baseURL: URL {
