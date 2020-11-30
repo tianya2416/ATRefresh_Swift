@@ -20,9 +20,8 @@ extension ApiMoya : TargetType{
     }
     
     public var sampleData: Data {
-        return Data.init();
+        return Data();
     }
-    
     public var task: Task {
             switch self {
             case let .apiClassify(page:page, size: size, group: group, name: name):
@@ -35,14 +34,6 @@ extension ApiMoya : TargetType{
     
     public var headers: [String : String]? {
         return [:]
-//        return [
-//            "Accept": "*/*",
-//            "Accept-Encoding": "br, gzip, deflate",
-//            "Accept-Language": "en-CN;q=1, zh-Hans-CN;q=0.9",
-//            "Connection": "keep-alive",
-//            "Content-Type": "application/x-www-form-urlencoded;charset=utf8",
-//            "Host": "mjappaz.yefu365.com",
-//        ]
     }
     
     public var baseURL: URL {

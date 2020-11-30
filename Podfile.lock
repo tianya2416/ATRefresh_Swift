@@ -1,18 +1,21 @@
 PODS:
-  - Alamofire (4.9.1)
+  - Alamofire (5.1.0)
   - ATKit_Swift (0.1.3)
   - DZNEmptyDataSet (1.8.1)
   - HandyJSON (5.0.1)
-  - Kingfisher (4.10.1)
+  - Kingfisher (5.13.4):
+    - Kingfisher/Core (= 5.13.4)
+  - Kingfisher/Core (5.13.4)
   - KVOController (1.2.0)
   - MJRefresh (3.4.3)
-  - Moya (13.0.1):
-    - Moya/Core (= 13.0.1)
-  - Moya/Core (13.0.1):
-    - Alamofire (~> 4.1)
-    - Result (~> 4.1)
-  - Result (4.1.0)
-  - SnapKit (4.2.0)
+  - Moya (14.0.0):
+    - Moya/Core (= 14.0.0)
+  - Moya/Core (14.0.0):
+    - Alamofire (~> 5.0)
+  - SnapKit (5.0.1)
+  - SQLite.swift (0.12.2):
+    - SQLite.swift/standard (= 0.12.2)
+  - SQLite.swift/standard (0.12.2)
   - SwiftyJSON (5.0.0)
 
 DEPENDENCIES:
@@ -25,6 +28,7 @@ DEPENDENCIES:
   - MJRefresh
   - Moya
   - SnapKit
+  - SQLite.swift
   - SwiftyJSON
 
 SPEC REPOS:
@@ -37,23 +41,23 @@ SPEC REPOS:
     - KVOController
     - MJRefresh
     - Moya
-    - Result
     - SnapKit
+    - SQLite.swift
     - SwiftyJSON
 
 SPEC CHECKSUMS:
-  Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
+  Alamofire: 9d5c5f602928e512395b30950c5984eca840093c
   ATKit_Swift: fa8cfd73aa7bce7748a9bf18b3f4d999a502b467
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   HandyJSON: d45b8415c501e3affc59ca9762c1197ff0feb646
-  Kingfisher: c148cd7b47ebde9989f6bc7c27dcaa79d81279a0
+  Kingfisher: d2279a7abece3c7f25a80cd2b7f363ca5cf3f44c
   KVOController: d72ace34afea42468329623b3379ab3cd1d286b6
   MJRefresh: 53e3e3219f204425ee6d3e62e8733d3295944cd6
-  Moya: f4a4b80ff2f8a4ffc208dfb31cd91636622fee6e
-  Result: bd966fac789cc6c1563440b348ab2598cc24d5c7
-  SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
+  Moya: 5b45dacb75adb009f97fde91c204c1e565d31916
+  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
+  SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: bb278d8109f2cc401c11bb3a65332b0282b72d9f
+PODFILE CHECKSUM: 63f6901984a821ebeee3fd6eee1233c83bc2a1d0
 
-COCOAPODS: 1.10.0.rc.1
+COCOAPODS: 1.9.3

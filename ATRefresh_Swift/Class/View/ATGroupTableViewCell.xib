@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -39,18 +40,31 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eJX-0l-zmm">
                         <rect key="frame" x="112" y="66" width="198" height="17"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <color key="textColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="textColor" systemColor="linkColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E5s-pS-RTS">
+                        <rect key="frame" x="261" y="60.5" width="49" height="28"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <inset key="contentEdgeInsets" minX="8" minY="4" maxX="8" maxY="4"/>
+                        <state key="normal" title="收藏">
+                            <color key="titleColor" red="0.36078431370000003" green="0.55294117649999996" blue="0.99607843139999996" alpha="1" colorSpace="calibratedRGB"/>
+                        </state>
+                        <connections>
+                            <action selector="favAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="BoY-9n-5zZ"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="sGu-WX-GoR" firstAttribute="trailing" secondItem="ppc-cc-xKi" secondAttribute="trailing" id="2k4-Bv-35b"/>
                     <constraint firstItem="BaB-cS-7k1" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="3q0-Qe-R8P"/>
+                    <constraint firstItem="E5s-pS-RTS" firstAttribute="centerY" secondItem="eJX-0l-zmm" secondAttribute="centerY" id="5Jg-qy-QOS"/>
                     <constraint firstItem="BaB-cS-7k1" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="5eb-ru-Pvq"/>
                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="BaB-cS-7k1" secondAttribute="bottom" constant="8" id="8CD-QD-dCZ"/>
                     <constraint firstItem="sGu-WX-GoR" firstAttribute="top" secondItem="ppc-cc-xKi" secondAttribute="bottom" constant="10" id="BjV-eJ-5L4"/>
                     <constraint firstItem="ppc-cc-xKi" firstAttribute="top" secondItem="BaB-cS-7k1" secondAttribute="top" id="Cvw-Xv-r4a"/>
                     <constraint firstAttribute="trailing" secondItem="ppc-cc-xKi" secondAttribute="trailing" constant="10" id="Jzn-3y-rKj"/>
+                    <constraint firstItem="E5s-pS-RTS" firstAttribute="trailing" secondItem="sGu-WX-GoR" secondAttribute="trailing" id="U2I-aa-uaM"/>
                     <constraint firstItem="eJX-0l-zmm" firstAttribute="trailing" secondItem="sGu-WX-GoR" secondAttribute="trailing" id="kBr-8k-U7D"/>
                     <constraint firstItem="eJX-0l-zmm" firstAttribute="leading" secondItem="sGu-WX-GoR" secondAttribute="leading" id="ptU-dX-vwP"/>
                     <constraint firstItem="sGu-WX-GoR" firstAttribute="leading" secondItem="ppc-cc-xKi" secondAttribute="leading" id="s86-du-8VR"/>
@@ -60,6 +74,7 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="favBtn" destination="E5s-pS-RTS" id="CwC-hl-0VX"/>
                 <outlet property="imageV" destination="BaB-cS-7k1" id="IgH-GD-cyQ"/>
                 <outlet property="nickNameLab" destination="eJX-0l-zmm" id="Q6u-dJ-YuJ"/>
                 <outlet property="subTitleLab" destination="sGu-WX-GoR" id="RP2-Ag-mm2"/>
@@ -68,4 +83,9 @@
             <point key="canvasLocation" x="137.68115942028987" y="145.3125"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <systemColor name="linkColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
 </document>

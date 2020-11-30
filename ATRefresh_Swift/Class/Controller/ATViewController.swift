@@ -21,7 +21,7 @@ class ATViewController: BaseTableViewController {
     }
     override func refreshData(page: Int) {
         DispatchQueue.main.asyncAfter(deadline: .now()+2) {
-            self.listData = ["下拉刷新","上拉加载","上拉下拉","无上下拉","ConnectionView"];
+            self.listData = ["下拉刷新","上拉加载","上拉下拉","无上下拉","ConnectionView","SQLite"];
             self.endRefresh(more: false);
             self.tableView.reloadData();
     
@@ -46,7 +46,10 @@ class ATViewController: BaseTableViewController {
         let str = self.listData[indexPath.row];
         if str == "ConnectionView"{
             self.navigationController?.pushViewController(ATGroupConnectionController(), animated:true)
-        }else{
+        }else if str == "SQLite"{
+            self.navigationController?.pushViewController(ATSqlController(), animated:true)
+        }
+        else{
             var options : ATRefreshOption = .none;
             if str == "下拉刷新" {
                 options = ATRefreshOption(rawValue: ATRefreshOption.header.rawValue|ATRefreshOption.autoHeader.rawValue);

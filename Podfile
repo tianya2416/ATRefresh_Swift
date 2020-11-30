@@ -16,4 +16,7 @@ target :ATRefresh_Swift  do
     pod 'KVOController'
     pod 'MJRefresh'
     pod 'Alamofire'
+    
+    pod 'SQLite.swift'
+    
 end
