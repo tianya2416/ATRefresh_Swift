@@ -21,9 +21,9 @@ class ATGroupConnectionController: BaseConnectionController {
         self.setupRefresh(scrollView: self.collectionView, options: .defaults);
     }
     override func refreshData(page: Int) {
-        let size : Int = RefreshPageSize;
+        let size : Int = 20;
         ApiMoya.apiMoyaRequest(target: .apiClassify(page: page, size: size, group: "male", name: "玄幻"), sucesss: { (json) in
-            if page == RefreshPageStart{
+            if page == 1{
                 self.listData.removeAll();
             }
             var arrayDatas :[ATGroupModel] = [];

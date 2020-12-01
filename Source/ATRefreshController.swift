@@ -7,6 +7,8 @@
 //
 import UIKit
 private let at_refresh_navi = ATRefresh.Navi_Bar()
+private let RefreshPageStart : Int = (1)
+
 open class ATRefreshController: UIViewController {
     
     weak open var scrollView : UIScrollView!
