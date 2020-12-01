@@ -25,15 +25,16 @@ class ATGroupTableController: BaseTableViewController {
     }
     
     override func refreshData(page: Int) {
-        let size : Int = 40;
+        let size : Int = RefreshPageSize
         ApiMoya.apiMoyaRequest(target: .apiClassify(page: page, size: size, group: "male", name: "玄幻"), sucesss: { (json) in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {//看清楚动画
-                print(json);
-                if page == 1{
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {//看清楚动画
+                
+                if page == RefreshPageSize{
                     self.listData.removeAll();
                 }
                 var arrayDatas :[ATGroupModel] = [];
                 if let data = [ATGroupModel].deserialize(from: json.rawString()){
+                    print(data.count)
                     arrayDatas = data as! [ATGroupModel]
                 }
                 self.listData.append(contentsOf: arrayDatas);

@@ -24,8 +24,9 @@ extension ApiMoya : TargetType{
     }
     public var task: Task {
             switch self {
+            
             case let .apiClassify(page:page, size: size, group: group, name: name):
-                return .requestParameters(parameters: ["gender":group,"major":name,"start":String(page),"limit":String(size),"type":"hot","minor":""], encoding: URLEncoding.default);
+                return .requestParameters(parameters: ["gender":group,"major":name,"start":String((page - 1)*size + 1  ),"limit":String(size),"type":"hot","minor":""], encoding: URLEncoding.default);
             case .apiHome:
                 return .requestParameters(parameters: [:], encoding:URLEncoding.default);
             }
@@ -35,15 +36,14 @@ extension ApiMoya : TargetType{
     public var headers: [String : String]? {
         return [:]
     }
-    
     public var baseURL: URL {
-        return URL.init(string: "https://api.zhuishushenqi.com")!
+        return URL(string: "https://api.zhuishushenqi.com")!
     }
     
     public var path: String {
         switch self {
         case .apiClassify:
-            return "/book/by-categories";
+            return "book/by-categories";
         case .apiHome:
             return "";
         }
@@ -55,7 +55,7 @@ extension ApiMoya : TargetType{
                 switch result{
                 case let .success(respond):
                     let json = JSON(respond.data)
-                    print(json);
+                    //print(json);
                     if json["ok"] == true {
                         sucesss(json["books"])
                     }else{

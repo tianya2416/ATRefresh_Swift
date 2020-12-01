@@ -15,12 +15,11 @@ public struct ATRefreshOption :OptionSet {
         self.rawValue = rawValue
     }
     public static var none          : ATRefreshOption{return ATRefreshOption(rawValue: 0)}
-    public static var header        : ATRefreshOption{return ATRefreshOption(rawValue: 1<<0)};
-    public static var footer        : ATRefreshOption{return ATRefreshOption(rawValue: 1<<1)};
-    public static var autoHeader    : ATRefreshOption{return ATRefreshOption(rawValue: 1<<2)};
-    public static var autoFooter    : ATRefreshOption{return ATRefreshOption(rawValue: 1<<3)};
-    public static var defaultHidden : ATRefreshOption{return ATRefreshOption(rawValue: 1<<4)};
-    public static var defaults      : ATRefreshOption{return ATRefreshOption(rawValue: header.rawValue|autoHeader.rawValue|footer.rawValue|defaultHidden.rawValue)};
+    public static var header        : ATRefreshOption{return ATRefreshOption(rawValue: 1<<0)}
+    public static var footer        : ATRefreshOption{return ATRefreshOption(rawValue: 1<<1)}
+    public static var autoHeader    : ATRefreshOption{return ATRefreshOption(rawValue: 1<<2)}
+    public static var autoFooter    : ATRefreshOption{return ATRefreshOption(rawValue: 1<<3)}
+    public static var defaults      : ATRefreshOption{return ATRefreshOption(rawValue: header.rawValue|autoHeader.rawValue|footer.rawValue|autoFooter.rawValue)}
 }
 
 @objc public protocol ATRefreshDataSource : NSObjectProtocol {
@@ -36,23 +35,16 @@ public struct ATRefreshOption :OptionSet {
 }
 class ATRefresh : NSObject{
     class func reachable() -> Bool{
-        return NetworkReachabilityManager.init()!.isReachable;
-    }
-    class func iPhone_X() -> Bool{
-        let window : UIWindow = ((UIApplication.shared.delegate?.window)!)!;
-           if #available(iOS 11.0, *) {
-               let inset : UIEdgeInsets = window.safeAreaInsets
-               if inset.bottom == 34 || inset.bottom == 21 {
-                   return true;
-               }else{
-                   return false
-               }
-           } else {
-              return false;
-           };
+        return NetworkReachabilityManager()!.isReachable;
     }
     class func Navi_Bar() -> CGFloat{
-        return iPhone_X() ? 88 : 64;
+        let window : UIWindow = ((UIApplication.shared.delegate?.window)!)!
+        if #available(iOS 11.0, *) {
+            let inset : UIEdgeInsets = window.safeAreaInsets
+            return inset.top + 44
+        } else {
+           return 64
+        }
     }
     
 }

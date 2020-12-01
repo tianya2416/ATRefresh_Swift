@@ -10,7 +10,7 @@
     self.setupEmpty(scrollView: self.tableView);
     self.setupRefresh(scrollView: self.tableView, options:.none);
     
-    2、2 无下拉刷新、无上拉加载
+    2、2 有下拉刷新、无上拉加载
     self.setupEmpty(scrollView: self.tableView);
     self.setupRefresh(scrollView: self.tableView, options:ATRefreshOption(rawValue: ATRefreshOption.header.rawValue|ATRefreshOption.autoHeader.rawValue));
     

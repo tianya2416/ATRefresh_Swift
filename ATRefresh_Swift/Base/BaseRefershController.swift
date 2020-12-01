@@ -9,7 +9,8 @@
 import UIKit
 import SnapKit
 import ATKit_Swift
-
+public let RefreshPageStart : Int = (1)
+public let RefreshPageSize  : Int = (20)
 class BaseRefershController: ATRefreshController,UIGestureRecognizerDelegate {
     //Example
     deinit {

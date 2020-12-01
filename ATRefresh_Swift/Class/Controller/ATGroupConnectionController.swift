@@ -21,9 +21,9 @@ class ATGroupConnectionController: BaseConnectionController {
         self.setupRefresh(scrollView: self.collectionView, options: .defaults);
     }
     override func refreshData(page: Int) {
-        let size : Int = 40;
+        let size : Int = RefreshPageSize;
         ApiMoya.apiMoyaRequest(target: .apiClassify(page: page, size: size, group: "male", name: "玄幻"), sucesss: { (json) in
-            if page == 1{
+            if page == RefreshPageStart{
                 self.listData.removeAll();
             }
             var arrayDatas :[ATGroupModel] = [];
@@ -32,7 +32,7 @@ class ATGroupConnectionController: BaseConnectionController {
             }
             self.listData.append(contentsOf: arrayDatas);
             self.collectionView.reloadData();
-            self.endRefresh(more: arrayDatas.count >= size)
+            self.endRefresh(more: arrayDatas.count > 0)
         }) { (error) in
             self.endRefreshFailure();
         }

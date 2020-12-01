@@ -6,7 +6,7 @@
 //  Copyright © 2019 wangws1990. All rights reserved.
 //
 import UIKit
-private let RefreshPageStart : Int = (1)
+private let at_refresh_navi = ATRefresh.Navi_Bar()
 open class ATRefreshController: UIViewController {
     
     weak open var scrollView : UIScrollView!
@@ -82,6 +82,7 @@ open class ATRefreshController: UIViewController {
     override open func viewDidLoad() {
         super.viewDidLoad()
     }
+    //MARK:设置刷新控件 子类可在refreshData中发起网络请求, 请求结束后回调endRefresh结束刷新动作
     /**
     @brief 设置刷新控件 子类可在refreshData中发起网络请求, 请求结束后回调endRefresh结束刷新动作
     @param scrollView 刷新控件所在scrollView
@@ -89,13 +90,12 @@ open class ATRefreshController: UIViewController {
     */
     open func setupRefresh(scrollView:UIScrollView,options:ATRefreshOption){
         self.scrollView = scrollView
-        if options.rawValue == ATRefreshOption.none.rawValue {
-            if self.responds(to: #selector(headerRefreshing)) {
-                self.headerRefreshing()
-            }
-            return
+        if options.rawValue == 0{
+            //无下拉上拉
+            self.headerRefreshing()
         }
         if options.rawValue & ATRefreshOption.header.rawValue == 1  {
+            //需要下拉刷新
             let header : MJRefreshGifHeader = MJRefreshGifHeader.init(refreshingTarget: self, refreshingAction: #selector(headerRefreshing))
             header.stateLabel?.isHidden = true
             header.isAutomaticallyChangeAlpha = true
@@ -110,6 +110,7 @@ open class ATRefreshController: UIViewController {
             scrollView.mj_header = header
         }
         if (options.rawValue & ATRefreshOption.footer.rawValue) == 2 {
+            //需要上拉加载
             let footer : MJRefreshAutoGifFooter = MJRefreshAutoGifFooter.init(refreshingTarget: self, refreshingAction: #selector(footerRefreshing))
             footer.triggerAutomaticallyRefreshPercent = 1
             footer.stateLabel?.isHidden = false
@@ -125,18 +126,12 @@ open class ATRefreshController: UIViewController {
             footer.setTitle("", for: .idle)
             footer.stateLabel?.font = UIFont.systemFont(ofSize: 14)
             if options.rawValue & ATRefreshOption.autoFooter.rawValue == 8 {
-                if self.currentPage == 0 {
-                    self.refreshing = true
-                }
                 self.footerRefreshing()
-            }
-            else if options.rawValue & ATRefreshOption.defaultHidden.rawValue == 16 {
-                footer.isHidden = true
             }
             scrollView.mj_footer = footer
         }
-        
     }
+    //MARK:设置空界面显示, 如果需要定制化
     /**
     设置空界面显示, 如果需要定制化 请实现协议 DZNEmptyDataSetSource, DZNEmptyDataSetDelegate
     tableView或者CollectionView数据reload后, 空界面展示可自动触发, 如需强制刷新, 请调用 [scrollView reloadEmptyDataSet]
@@ -167,13 +162,14 @@ open class ATRefreshController: UIViewController {
             weakSelf!.perform(#selector(weakSelf!.reloadEmptyData), with:nil, afterDelay: 0.01)
         }
     }
+    //MARK:分页请求一开始page = 1
     /**
     @brief 分页请求一开始page = 1
     @param page 当前页码
     */
     open func refreshData(page:Int){
         self.currentPage = page
-        DispatchQueue.main.asyncAfter(deadline: .now()+1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
             if self.scrollView.mj_header != nil{
                 if (self.scrollView?.mj_header?.isRefreshing)! || (self.scrollView?.mj_header?.isRefreshing)!{
                     self.endRefreshFailure()
@@ -181,6 +177,7 @@ open class ATRefreshController: UIViewController {
             }
         }
     }
+    //MARK:分页加载成功 是否有下一页数据
     /**
     @brief 分页加载成功 是否有下一页数据
     */
@@ -208,6 +205,7 @@ open class ATRefreshController: UIViewController {
             }
         }
     }
+    //MARK:分页加载失败
     open func endRefreshFailure(error :String? = nil){
         if error != nil {
             self.emptyToast = error ?? ""
@@ -227,12 +225,14 @@ open class ATRefreshController: UIViewController {
     @brief 加载第一页
     */
     @objc open func headerRefreshing(){
-        self.refreshing = true
-        if self.scrollView.mj_footer != nil{
-            self.scrollView?.mj_footer?.isHidden = true
+        if self.refreshing == false {
+            self.refreshing = true
+            if self.scrollView.mj_footer != nil{
+                self.scrollView?.mj_footer?.isHidden = true
+            }
+            self.currentPage = RefreshPageStart
+            self.refreshData(page: self.currentPage)
         }
-        self.currentPage = RefreshPageStart
-        self.refreshData(page: self.currentPage)
     }
     @objc open func footerRefreshing(){
         if self.refreshing == false {
@@ -279,7 +279,7 @@ extension ATRefreshController :DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
         return false
     }
     open func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
-        return -(ATRefresh.Navi_Bar())/2
+        return -(at_refresh_navi)/2
     }
     open func spaceHeight(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
         return 1
