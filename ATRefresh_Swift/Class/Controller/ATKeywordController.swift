@@ -110,11 +110,6 @@ class ATKeywordController: BaseTableViewController {
 }
 class ATFavController: BaseTableViewController {
 
-    convenience init(options:ATRefreshOption) {
-        self.init();
-        self.options = options;
-    }
-    var options : ATRefreshOption = .none;
     lazy var listData : [ATGroupModel] = {
         return []
     }()
@@ -122,11 +117,14 @@ class ATFavController: BaseTableViewController {
         super.viewDidLoad()
         self.showNavTitle(title: "收藏夹")
         self.setupEmpty(scrollView: self.tableView,title: "收藏夹空空如也，去收藏数据吧");
-        self.setupRefresh(scrollView: self.tableView, options:self.options);
+        self.setupRefresh(scrollView: self.tableView, options:.defaults);
     }
     
     override func refreshData(page: Int) {
         ApiDataQueue.searchData(page: page,size:20) { (json) in
+            if page == 1{
+                self.listData.removeAll()
+            }
             var datas : [ATGroupModel] = []
             if let data = [ATGroupModel].deserialize(from: json.rawString()){
                 datas = data as! [ATGroupModel]

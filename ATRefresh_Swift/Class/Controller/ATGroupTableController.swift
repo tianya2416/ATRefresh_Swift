@@ -29,7 +29,7 @@ class ATGroupTableController: BaseTableViewController {
         ApiMoya.apiMoyaRequest(target: .apiClassify(page: page, size: size, group: "male", name: "玄幻"), sucesss: { (json) in
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {//看清楚动画
                 
-                if page == RefreshPageSize{
+                if page == RefreshPageStart{
                     self.listData.removeAll();
                 }
                 var arrayDatas :[ATGroupModel] = [];
@@ -38,8 +38,8 @@ class ATGroupTableController: BaseTableViewController {
                     arrayDatas = data as! [ATGroupModel]
                 }
                 self.listData.append(contentsOf: arrayDatas);
-                self.tableView.reloadData();
-                self.endRefresh(more: arrayDatas.count >= size)
+                self.tableView.reloadData()
+                self.endRefresh(more: arrayDatas.count > 0)
             }
         }) { (error) in
             self.endRefreshFailure(error:error);

@@ -96,7 +96,7 @@ open class ATRefreshController: UIViewController {
         }
         if options.rawValue & ATRefreshOption.header.rawValue == 1  {
             //需要下拉刷新
-            let header : MJRefreshGifHeader = MJRefreshGifHeader.init(refreshingTarget: self, refreshingAction: #selector(headerRefreshing))
+            let header : MJRefreshGifHeader = MJRefreshGifHeader(refreshingTarget: self, refreshingAction: #selector(headerRefreshing))
             header.stateLabel?.isHidden = true
             header.isAutomaticallyChangeAlpha = true
             header.lastUpdatedTimeLabel?.isHidden = true
@@ -111,7 +111,7 @@ open class ATRefreshController: UIViewController {
         }
         if (options.rawValue & ATRefreshOption.footer.rawValue) == 2 {
             //需要上拉加载
-            let footer : MJRefreshAutoGifFooter = MJRefreshAutoGifFooter.init(refreshingTarget: self, refreshingAction: #selector(footerRefreshing))
+            let footer : MJRefreshAutoGifFooter = MJRefreshAutoGifFooter(refreshingTarget: self, refreshingAction: #selector(footerRefreshing))
             footer.triggerAutomaticallyRefreshPercent = 1
             footer.stateLabel?.isHidden = false
             footer.labelLeftInset = -22
@@ -170,42 +170,43 @@ open class ATRefreshController: UIViewController {
     open func refreshData(page:Int){
         self.currentPage = page
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-            if self.scrollView.mj_header != nil{
-                if (self.scrollView?.mj_header?.isRefreshing)! || (self.scrollView?.mj_header?.isRefreshing)!{
-                    self.endRefreshFailure()
-                }
-            }
+            guard let scrollView = self.scrollView else { return }
+            guard let mj_header = scrollView.mj_header else { return }
+            mj_header.isRefreshing ? self.endRefreshFailure() : nil
         }
     }
-    //MARK:分页加载成功 是否有下一页数据
+    //MARK:加载成功 是否有下一页数据
     /**
     @brief 分页加载成功 是否有下一页数据
     */
     open func endRefresh(more:Bool){
         self.baseEndRefreshing()
-        if self.scrollView.mj_footer == nil {
-            return
-        }
+        guard let scrollView = self.scrollView else { return }
+        guard let mj_footer = scrollView.mj_footer else { return }
         if more {
-            self.scrollView?.mj_footer?.state = .idle
-            self.scrollView?.mj_footer?.isHidden = false
-            let footer:MJRefreshAutoStateFooter = self.scrollView?.mj_footer as! MJRefreshAutoStateFooter
-            footer.stateLabel?.textColor = UIColor.init(hex: "666666")
-            footer.stateLabel?.font = UIFont.systemFont(ofSize: 14)
+            mj_footer.state = .idle
+            mj_footer.isHidden = false
+            if mj_footer is MJRefreshAutoStateFooter{
+                let footer:MJRefreshAutoStateFooter = mj_footer as! MJRefreshAutoStateFooter
+                footer.stateLabel?.textColor = UIColor(hex: "666666")
+                footer.stateLabel?.font = UIFont.systemFont(ofSize: 14)
+            }
         }else{
-            self.scrollView?.mj_footer?.state = .noMoreData
-            let footer:MJRefreshAutoStateFooter = self.scrollView?.mj_footer as! MJRefreshAutoStateFooter
-            footer.stateLabel?.textColor = UIColor.init(hex: "999999")
-            footer.stateLabel?.font = UIFont.systemFont(ofSize: 14)
+            mj_footer.state = .noMoreData
+            if mj_footer is  MJRefreshAutoStateFooter{
+                let footer:MJRefreshAutoStateFooter = mj_footer as! MJRefreshAutoStateFooter
+                footer.stateLabel?.textColor = UIColor(hex: "999999")
+                footer.stateLabel?.font = UIFont.systemFont(ofSize: 14)
+            }
             DispatchQueue.main.asyncAfter(deadline:.now()+0.01) {
-                let height : CGFloat = (self.scrollView?.contentSize.height)!
-                let sizeHeight : CGFloat = (self.scrollView?.frame.size.height)!
+                let height : CGFloat = (scrollView.contentSize.height)
+                let sizeHeight : CGFloat = (scrollView.frame.size.height)
                 let res : Bool = (self.currentPage == RefreshPageStart) || (height < sizeHeight)
-                self.scrollView?.mj_footer!.isHidden = res
+                mj_footer.isHidden = res
             }
         }
     }
-    //MARK:分页加载失败
+    //MARK:加载失败
     open func endRefreshFailure(error :String? = nil){
         if error != nil {
             self.emptyToast = error ?? ""
@@ -214,12 +215,10 @@ open class ATRefreshController: UIViewController {
             self.currentPage = self.currentPage - 1
         }
         self.baseEndRefreshing()
-        if self.scrollView.mj_footer != nil {
-            if (self.scrollView?.mj_footer?.isRefreshing)! {
-                self.scrollView?.mj_footer?.state = .idle
-            }
-        }
         self.reloadEmptyData()
+        guard let scrollView = self.scrollView else { return }
+        guard let mj_footer = scrollView.mj_header else { return }
+        mj_footer.isRefreshing ? mj_footer.state = .idle : nil
     }
     /**
     @brief 加载第一页
@@ -227,9 +226,6 @@ open class ATRefreshController: UIViewController {
     @objc open func headerRefreshing(){
         if self.refreshing == false {
             self.refreshing = true
-            if self.scrollView.mj_footer != nil{
-                self.scrollView?.mj_footer?.isHidden = true
-            }
             self.currentPage = RefreshPageStart
             self.refreshData(page: self.currentPage)
         }
@@ -242,38 +238,35 @@ open class ATRefreshController: UIViewController {
         }
     }
     final func baseEndRefreshing(){
-        if self.scrollView.mj_header != nil {
-            if (self.scrollView?.mj_header?.isRefreshing)! {
-                self.scrollView?.mj_header?.endRefreshing()
-            }
-        }
         self.refreshing = false
+        guard let scrollView = self.scrollView else { return }
+        guard let mj_header = scrollView.mj_header else { return }
+        mj_header.isRefreshing ? mj_header.endRefreshing() : nil
     }
     @objc final func reloadEmptyData(){
-        if self.scrollView != nil {
-            self.scrollView?.reloadEmptyDataSet()
-        }
+        guard let scrollView = self.scrollView else { return }
+        scrollView.reloadEmptyDataSet()
     }
 
 }
 extension ATRefreshController :DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
     //MARK:DZNEmptyDataSetSource
     open func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let text :String = self.refreshing ? self.loadToast : ((!self.reachable ? self.errorToast : self.emptyToast))
+        let text :String = self.refreshing ? self.loadToast : (!self.reachable ? self.errorToast : self.emptyToast)
         var dic : [NSAttributedString.Key : Any ] = [:]
         let font : UIFont = UIFont.systemFont(ofSize: 15)
-        let color : UIColor = UIColor.init(hex: "999999")
+        let color : UIColor = UIColor(hex: "999999")
         dic.updateValue(font, forKey: .font)
         dic.updateValue(color, forKey: .foregroundColor)
-        let att : NSAttributedString = NSAttributedString.init(string:"\r\n"+text, attributes:(dic))
+        let att : NSAttributedString = NSAttributedString(string:"\r\n"+text, attributes:(dic))
         return att
     }
     open func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         return nil
     }
     open func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
-        let image : UIImage = (self.refreshing ? self.loadImages : self.emptyImage)
-        return self.reachable ? image : self.errorImage
+        let image : UIImage = (self.refreshing ? self.loadImages : (self.reachable ? self.emptyImage : self.errorImage))
+        return image
     }
     open func emptyDataSetShouldAnimateImageView(_ scrollView: UIScrollView!) -> Bool {
         return false
