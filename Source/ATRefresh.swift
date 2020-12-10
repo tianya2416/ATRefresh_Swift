@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-import Alamofire
+
 public struct ATRefreshOption :OptionSet {
     public let rawValue : Int
     public init(rawValue: Int) {
@@ -23,44 +23,54 @@ public struct ATRefreshOption :OptionSet {
 }
 
 @objc public protocol ATRefreshDataSource : NSObjectProtocol {
-    var refreshFooterData:[UIImage] { get}
-    var refreshHeaderData:[UIImage] { get}
-    var refreshLoaderData:[UIImage] { get}
-    var refreshEmptyData :UIImage   { get}
-    var refreshErrorData :UIImage   { get}
+    var refreshFooterData  :[UIImage] { get}
+    var refreshHeaderData  :[UIImage] { get}
+    var refreshLoaderData  :[UIImage] { get}
+    var refreshEmptyData   :UIImage   { get}
+    var refreshErrorData   :UIImage   { get}
+    var refreshNetAvailable:Bool      { get}
     
     @objc optional var refreshLoaderToast : String {get}
     @objc optional var refreshErrorToast  : String {get}
     @objc optional var refreshEmptyToast  : String {get}
 }
-class ATRefresh : NSObject{
-    class func reachable() -> Bool{
-        return NetworkReachabilityManager()!.isReachable;
-    }
-    class func Navi_Bar() -> CGFloat{
-        let window : UIWindow = ((UIApplication.shared.delegate?.window)!)!
-        if #available(iOS 11.0, *) {
-            let inset : UIEdgeInsets = window.safeAreaInsets
-            return inset.top + 44
-        } else {
-           return 64
+
+public let at_iphone                 = ATRefresh.iPhone_Bar()
+public let at_statusBar              = at_iphone.statusBar//状态栏高度
+public let at_naviBar                = at_statusBar + 44  //导航栏高度
+public let at_tabBar                 = at_iphone.tabBar   //底部tabbar高度
+public let at_iphoneX                = at_iphone.iphoneX  //是否是有刘海
+
+public class ATRefresh : NSObject{
+    class func iPhone_Bar() ->(iphoneX :Bool,statusBar : CGFloat,tabBar : CGFloat){
+        if let window = UIApplication.shared.delegate?.window {
+            if #available(iOS 11.0, *) {
+                let inset : UIEdgeInsets = window!.safeAreaInsets
+                return (inset.bottom > 0, inset.top,inset.bottom)
+            } else {
+                 return (false,20,0)
+            }
         }
+        return (false,20,0)
     }
     
 }
-extension UIImage{
+
+public extension UIImage{
     class func imageWithColor(color:UIColor) -> UIImage{
-          let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
-          UIGraphicsBeginImageContext(rect.size)
-          let context = UIGraphicsGetCurrentContext()
-          context!.setFillColor(color.cgColor)
-          context!.fill(rect)
-          let image = UIGraphicsGetImageFromCurrentImageContext()
-          UIGraphicsEndImageContext()
-          return image!
-      }
+        
+         let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
+         UIGraphicsBeginImageContext(rect.size)
+         let context = UIGraphicsGetCurrentContext()
+         context!.setFillColor(color.cgColor)
+         context!.fill(rect)
+         let image = UIGraphicsGetImageFromCurrentImageContext()
+         UIGraphicsEndImageContext()
+         return image!
+     }
 }
-extension UIColor {
+
+public extension UIColor {
     convenience init(hex string: String) {
       var hex = string.hasPrefix("#")
         ? String(string.dropFirst())
@@ -83,5 +93,8 @@ extension UIColor {
         red:   CGFloat((intCode >> 16) & 0xFF) / 255.0,
         green: CGFloat((intCode >> 8) & 0xFF) / 255.0,
         blue:  CGFloat((intCode) & 0xFF) / 255.0, alpha: 1.0)
+    }
+    func alpha(_ value: CGFloat) -> UIColor {
+      return withAlphaComponent(value)
     }
 }

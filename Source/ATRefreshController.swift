@@ -6,45 +6,54 @@
 //  Copyright © 2019 wangws1990. All rights reserved.
 //
 import UIKit
-private let at_refresh_navi = ATRefresh.Navi_Bar()
+
 private let RefreshPageStart : Int = (1)
 
 open class ATRefreshController: UIViewController {
     
     weak open var scrollView : UIScrollView!
     weak open var dataSource : ATRefreshDataSource? = nil
-    
-    private var reachable: Bool = ATRefresh.reachable()
-    
+    //MARK:Net available
+    private var reachable: Bool{
+        get{
+            return self.dataSource?.refreshNetAvailable == false ? false : true
+        }
+    }
+    //MARK:header animation
     private var headerImages  : [UIImage]{
         get{
             return self.dataSource?.refreshHeaderData ?? []
         }
     }
+    //MARK:footer animation
     private var footerImages  : [UIImage]{
         get{
             return (self.dataSource?.refreshFooterData) ?? []
         }
     }
+    //MARK:load animation
     private var loadImages    : UIImage{
         get{
             let images = (self.dataSource?.refreshLoaderData) ?? []
-            return UIImage.animatedImage(with: images, duration: 0.35)!
+            return UIImage.animatedImage(with: images, duration: 0.35) ?? UIImage.imageWithColor(color: UIColor(hex: "999999"))
         }
     }
+    //MARK: net error image
     private var errorImage    : UIImage{
         get{
-            return self.dataSource?.refreshErrorData ?? UIImage.init()
+            return self.dataSource?.refreshErrorData ?? UIImage.imageWithColor(color: UIColor(hex: "999999"))
         }
     }
+    //MARK:empty data image
     private var _emptyImage   : UIImage?
     private var emptyImage    : UIImage{
         get{
-            return _emptyImage ?? (self.dataSource?.refreshEmptyData ?? UIImage.init())
+            return _emptyImage ?? (self.dataSource?.refreshEmptyData ?? UIImage.imageWithColor(color: UIColor(hex: "999999")))
         }set{
             _emptyImage = newValue
         }
     }
+    //MARK:empty data toast
     private var _emptyToast   : String?
     private var emptyToast    : String{
         get{
@@ -53,11 +62,13 @@ open class ATRefreshController: UIViewController {
             _emptyToast = newValue
         }
     }
+    //MARK:error data toast
     private var errorToast    : String{
         get{
             return self.dataSource?.refreshErrorToast ?? "Net Error..."
         }
     }
+    //MARK:load data toast
     private var loadToast     : String{
         get{
             return self.dataSource?.refreshLoaderToast ?? "Data Loading..."
@@ -79,7 +90,7 @@ open class ATRefreshController: UIViewController {
         }
     }
     deinit {
-        print(self.classForCoder,"is deinit")
+        debugPrint(self.classForCoder,"is deinit")
     }
     override open func viewDidLoad() {
         super.viewDidLoad()
@@ -222,9 +233,7 @@ open class ATRefreshController: UIViewController {
         guard let mj_footer = scrollView.mj_header else { return }
         mj_footer.isRefreshing ? mj_footer.state = .idle : nil
     }
-    /**
-    @brief 加载第一页
-    */
+    //MARK: load first page
     @objc open func headerRefreshing(){
         if self.refreshing == false {
             self.refreshing = true
@@ -232,6 +241,7 @@ open class ATRefreshController: UIViewController {
             self.refreshData(page: self.currentPage)
         }
     }
+    //MARK:load foot
     @objc open func footerRefreshing(){
         if self.refreshing == false {
             self.refreshing = true
@@ -249,7 +259,6 @@ open class ATRefreshController: UIViewController {
         guard let scrollView = self.scrollView else { return }
         scrollView.reloadEmptyDataSet()
     }
-
 }
 extension ATRefreshController :DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
     //MARK:DZNEmptyDataSetSource
@@ -274,7 +283,7 @@ extension ATRefreshController :DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
         return false
     }
     open func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
-        return -(at_refresh_navi)/2
+        return -(at_iphone.statusBar + 44)/2
     }
     open func spaceHeight(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
         return 1

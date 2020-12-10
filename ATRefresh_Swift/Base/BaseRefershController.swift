@@ -9,11 +9,11 @@
 import UIKit
 import SnapKit
 import ATKit_Swift
-
+import Alamofire
 class BaseRefershController: ATRefreshController,UIGestureRecognizerDelegate {
     //Example
     deinit {
-        print(self.classForCoder)
+        debugPrint(self.classForCoder)
     }
     private lazy var images: [UIImage] = {
         var images :[UIImage] = []
@@ -32,16 +32,18 @@ class BaseRefershController: ATRefreshController,UIGestureRecognizerDelegate {
         self.view.backgroundColor = UIColor.white
         self.dataSource = self
     }
-    
     //MARK:UIGestureRecognizerDelegate
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
     override func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
-        return -ATRefresh.Navi_Bar()/2
+        return -(at_iphone.statusBar + 44)/2
     }
 }
 extension BaseRefershController : ATRefreshDataSource{
+    var refreshNetAvailable: Bool {
+        NetworkReachabilityManager()!.isReachable
+    }
     var refreshLoaderData: [UIImage] {
         return self.images
     }
@@ -51,13 +53,12 @@ extension BaseRefershController : ATRefreshDataSource{
     var refreshHeaderData: [UIImage] {
         return self.images
     }
-    
     var refreshEmptyData: UIImage {
-        return UIImage.init(named: "icon_data_empty") ?? UIImage.init()
+        return UIImage(named: "icon_data_empty") ?? UIImage()
     }
     
     var refreshErrorData: UIImage {
-        return UIImage.init(named: "icon_data_empty") ?? UIImage.init()
+        return UIImage(named: "icon_data_empty") ?? UIImage()
     }
     var refreshEmptyToast: String{
         return "数据空空如也"

@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.description      = <<-DESC
                        Some classes and class category commonly used in iOS rapid development.
                        DESC
-  s.homepage         = 'http://blog.cocoachina.com/227971'
+  s.homepage         = 'https://github.com/tianya2416/ATRefresh_Swift.git'
   s.license          = 'MIT'
   s.author           = { 'tianya2416' => '1203123826@qq.com' } 
   s.source           = { :git => 'https://github.com/tianya2416/ATRefresh_Swift.git', :tag => s.version }
@@ -15,7 +15,6 @@ Pod::Spec.new do |s|
   s.requires_arc     = true
   s.source_files     = 'Source/*.{h,swift}'
   
-  s.dependency       'Alamofire'
   s.dependency       'DZNEmptyDataSet', '~> 1.8.1'
   s.dependency       'KVOController','~> 1.2.0'
   s.dependency       'MJRefresh','~> 3.4.3'
