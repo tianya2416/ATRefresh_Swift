@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		0A5FC592498C8ACCC6934CDB /* Pods_ATRefresh_Swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B058A2C2925034C97260224C /* Pods_ATRefresh_Swift.framework */; };
 		0F174A2F246929C500A1265F /* ATRefresh_Swift.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 0F174A2E246929C500A1265F /* ATRefresh_Swift.podspec */; };
-		0F41C128246E3FBF00C5C49B /* ATRefreshController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F41C127246E3FBF00C5C49B /* ATRefreshController.swift */; };
+		0F41C128246E3FBF00C5C49B /* ATRefreshData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F41C127246E3FBF00C5C49B /* ATRefreshData.swift */; };
 		0F4C5DAC2466AA970030D2C4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F4C5DAB2466AA970030D2C4 /* AppDelegate.swift */; };
 		0F4C5DB32466AA970030D2C4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0F4C5DB12466AA970030D2C4 /* Main.storyboard */; };
 		0F4C5DB52466AA970030D2C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0F4C5DB42466AA970030D2C4 /* Assets.xcassets */; };
@@ -38,7 +38,7 @@
 
 /* Begin PBXFileReference section */
 		0F174A2E246929C500A1265F /* ATRefresh_Swift.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ATRefresh_Swift.podspec; sourceTree = "<group>"; };
-		0F41C127246E3FBF00C5C49B /* ATRefreshController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ATRefreshController.swift; sourceTree = "<group>"; };
+		0F41C127246E3FBF00C5C49B /* ATRefreshData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ATRefreshData.swift; sourceTree = "<group>"; };
 		0F4C5DA82466AA970030D2C4 /* ATRefresh_Swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ATRefresh_Swift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0F4C5DAB2466AA970030D2C4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0F4C5DB22466AA970030D2C4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -123,7 +123,7 @@
 			children = (
 				0F4C5DC62466B1260030D2C4 /* ATRefresh_Swift-Bridging-Header.h */,
 				0F4C5DD32466BC460030D2C4 /* ATRefresh.swift */,
-				0F41C127246E3FBF00C5C49B /* ATRefreshController.swift */,
+				0F41C127246E3FBF00C5C49B /* ATRefreshData.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -321,7 +321,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0F41C128246E3FBF00C5C49B /* ATRefreshController.swift in Sources */,
+				0F41C128246E3FBF00C5C49B /* ATRefreshData.swift in Sources */,
 				0FA977192574D6D400A3BB82 /* ATKeywordController.swift in Sources */,
 				0F4C5DAC2466AA970030D2C4 /* AppDelegate.swift in Sources */,
 				0FA976FF2574CE3E00A3BB82 /* ATViewController.swift in Sources */,

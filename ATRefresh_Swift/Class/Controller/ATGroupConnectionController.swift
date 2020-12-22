@@ -17,7 +17,6 @@ class ATGroupConnectionController: BaseConnectionController {
         super.viewDidLoad()
         
         self.showNavTitle(title: "玄幻")
-        self.setupEmpty(scrollView: self.collectionView);
         self.setupRefresh(scrollView: self.collectionView, options: .defaults);
     }
     override func refreshData(page: Int) {

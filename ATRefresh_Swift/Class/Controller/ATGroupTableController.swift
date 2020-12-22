@@ -20,7 +20,6 @@ class ATGroupTableController: BaseTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.showNavTitle(title: "玄幻")
-        self.setupEmpty(scrollView: self.tableView);
         self.setupRefresh(scrollView: self.tableView, options:self.options);
     }
     

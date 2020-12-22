@@ -15,8 +15,6 @@ class ATSqlController: BaseTableViewController {
     }()
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.setupEmpty(scrollView: self.tableView)
         self.setupRefresh(scrollView: self.tableView, options: .defaults);
     }
     override func refreshData(page: Int) {

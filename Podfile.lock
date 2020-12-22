@@ -1,12 +1,11 @@
 PODS:
   - Alamofire (5.1.0)
   - ATKit_Swift (0.1.3)
-  - DZNEmptyDataSet (1.8.1)
+  - EmptyDataSet-Swift (5.0.0)
   - HandyJSON (5.0.1)
   - Kingfisher (5.13.4):
     - Kingfisher/Core (= 5.13.4)
   - Kingfisher/Core (5.13.4)
-  - KVOController (1.2.0)
   - MJRefresh (3.4.3)
   - Moya (14.0.0):
     - Moya/Core (= 14.0.0)
@@ -21,10 +20,9 @@ PODS:
 DEPENDENCIES:
   - Alamofire
   - ATKit_Swift
-  - DZNEmptyDataSet
+  - EmptyDataSet-Swift (~> 5.0.0)
   - HandyJSON
   - Kingfisher
-  - KVOController
   - MJRefresh
   - Moya
   - SnapKit
@@ -35,10 +33,9 @@ SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - Alamofire
     - ATKit_Swift
-    - DZNEmptyDataSet
+    - EmptyDataSet-Swift
     - HandyJSON
     - Kingfisher
-    - KVOController
     - MJRefresh
     - Moya
     - SnapKit
@@ -48,16 +45,15 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Alamofire: 9d5c5f602928e512395b30950c5984eca840093c
   ATKit_Swift: fa8cfd73aa7bce7748a9bf18b3f4d999a502b467
-  DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
+  EmptyDataSet-Swift: eb382c0c87a2d9c678077385a595cec52da38171
   HandyJSON: d45b8415c501e3affc59ca9762c1197ff0feb646
   Kingfisher: d2279a7abece3c7f25a80cd2b7f363ca5cf3f44c
-  KVOController: d72ace34afea42468329623b3379ab3cd1d286b6
   MJRefresh: 53e3e3219f204425ee6d3e62e8733d3295944cd6
   Moya: 5b45dacb75adb009f97fde91c204c1e565d31916
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: 63f6901984a821ebeee3fd6eee1233c83bc2a1d0
+PODFILE CHECKSUM: c484caf0b291d373534cee7ee9eafe666f440771
 
 COCOAPODS: 1.9.3

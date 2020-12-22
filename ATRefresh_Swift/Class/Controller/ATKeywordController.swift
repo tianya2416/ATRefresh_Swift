@@ -61,7 +61,6 @@ class ATKeywordController: BaseTableViewController {
             make.left.right.bottom.equalToSuperview()
             make.top.equalTo(self.textField.snp.bottom).offset(15)
         }
-        self.setupEmpty(scrollView: self.tableView)
         self.setupRefresh(scrollView: self.tableView, options: .none)
     }
     override func refreshData(page: Int) {
@@ -116,7 +115,6 @@ class ATFavController: BaseTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.showNavTitle(title: "收藏夹")
-        self.setupEmpty(scrollView: self.tableView,title: "收藏夹空空如也，去收藏数据吧");
         self.setupRefresh(scrollView: self.tableView, options:.defaults);
     }
     
@@ -166,4 +164,15 @@ class ATFavController: BaseTableViewController {
        }
        return [row]
    }
+//    var refreshVertica: CGFloat{
+//        return -200
+//    }
+//    var refreshCustomView: UIView{
+////        let activity = UIActivityIndicatorView.init(style: .gray)
+////        activity.startAnimating()
+////        return activity
+//        let view = UIView(frame: CGRect.init(x:self.view.frame.size.height/2 - 50, y: 0, width: 100, height: 100))
+//        view.backgroundColor = UIColor.red
+//        return view
+//    }
 }

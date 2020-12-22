@@ -5,6 +5,10 @@ use_frameworks!
 inhibit_all_warnings!
 
 target :ATRefresh_Swift  do
+  
+  pod 'EmptyDataSet-Swift', '~> 5.0.0'
+  pod 'MJRefresh'
+  
     pod 'SnapKit'
     pod 'ATKit_Swift'
     pod 'SwiftyJSON'
@@ -12,9 +16,6 @@ target :ATRefresh_Swift  do
     pod 'Moya'
     pod 'Kingfisher'
     
-    pod 'DZNEmptyDataSet'
-    pod 'KVOController'
-    pod 'MJRefresh'
     pod 'Alamofire'
     
     pod 'SQLite.swift'

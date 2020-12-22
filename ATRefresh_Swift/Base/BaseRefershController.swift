@@ -10,10 +10,29 @@ import UIKit
 import SnapKit
 import ATKit_Swift
 import Alamofire
-class BaseRefershController: ATRefreshController,UIGestureRecognizerDelegate {
+
+private var refreshEmptyData : UIImage = UIImage(named: "icon_data_empty") ?? UIImage()
+private let refreshErrorData : UIImage = UIImage(named: "icon_net_error") ?? UIImage()
+
+private let refreshLoaderToast: String = "Data loading..."
+private let refreshErrorToast : String = "Net Error..."
+private var refreshEmptyToast : String = "Data Empty..."
+
+class BaseRefershController: UIViewController {
     //Example
     deinit {
         debugPrint(self.classForCoder)
+    }
+    lazy var refreshData: ATRefreshData = {
+        let refresh = ATRefreshData()
+        refresh.delegate = self
+        refresh.dataSource = self
+        return refresh
+    }()
+    var refreshNetAvailable : Bool{
+        get{
+            return NetworkReachabilityManager()!.isReachable
+        }
     }
     private lazy var images: [UIImage] = {
         var images :[UIImage] = []
@@ -30,44 +49,53 @@ class BaseRefershController: ATRefreshController,UIGestureRecognizerDelegate {
         self.edgesForExtendedLayout = []
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         self.view.backgroundColor = UIColor.white
-        self.dataSource = self
     }
-    //MARK:UIGestureRecognizerDelegate
-    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
+    public func setupRefresh(scrollView:UIScrollView,
+                             options:ATRefreshOption,
+                             image:UIImage = refreshEmptyData,
+                             title:String = refreshEmptyToast){
+        refreshEmptyData  = image
+        refreshEmptyToast = title
+        self.refreshData.setupRefresh(scrollView: scrollView, options: options)
     }
-    override func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
-        return -(at_iphone.statusBar + 44)/2
+    public func endRefresh(more:Bool){
+        self.refreshData.endRefresh(more: more)
+    }
+    public func endRefreshFailure(error :String? = nil){
+        self.refreshData.endRefreshFailure()
     }
 }
 extension BaseRefershController : ATRefreshDataSource{
-    var refreshNetAvailable: Bool {
-        NetworkReachabilityManager()!.isReachable
-    }
-    var refreshLoaderData: [UIImage] {
+    
+    var refreshHeaderData: [UIImage] {
         return self.images
     }
     var refreshFooterData: [UIImage] {
         return self.images
     }
-    var refreshHeaderData: [UIImage] {
-        return self.images
+    var refreshLogo: UIImage{
+        let newImage : UIImage = UIImage.animatedImage(with: self.images, duration: 0.35)!
+        let image : UIImage = (self.refreshData.refreshing ? newImage : (self.refreshNetAvailable ? refreshEmptyData : refreshErrorData))
+        return image
     }
-    var refreshEmptyData: UIImage {
-        return UIImage(named: "icon_data_empty") ?? UIImage()
-    }
-    
-    var refreshErrorData: UIImage {
-        return UIImage(named: "icon_data_empty") ?? UIImage()
-    }
-    var refreshEmptyToast: String{
-        return "数据空空如也"
-    }
-    var refreshLoaderToast: String{
-        return "数据加载中"
-    }
-    var refreshErrorToast: String{
-        return "网络出现问题了"
+    var refreshTitle: NSAttributedString{
+        let text :String = self.refreshData.refreshing ? refreshLoaderToast : (!self.refreshNetAvailable ? refreshErrorToast : refreshEmptyToast)
+        var dic : [NSAttributedString.Key : Any ] = [:]
+        let font : UIFont = UIFont.systemFont(ofSize: 16)
+        let color : UIColor = UIColor(hex: "666666")
+        dic.updateValue(font, forKey: .font)
+        dic.updateValue(color, forKey: .foregroundColor)
+        let att : NSAttributedString = NSAttributedString(string:"\r\n"+text, attributes:(dic))
+        return att
     }
 }
 
+extension BaseRefershController : ATRefreshDelegate{
+    @objc public func refreshData(page:Int){}
+}
+extension BaseRefershController : UIGestureRecognizerDelegate{
+    //MARK:UIGestureRecognizerDelegate
+    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+}

@@ -23,16 +23,18 @@ public struct ATRefreshOption :OptionSet {
 }
 
 @objc public protocol ATRefreshDataSource : NSObjectProtocol {
-    var refreshFooterData  :[UIImage] { get}
-    var refreshHeaderData  :[UIImage] { get}
-    var refreshLoaderData  :[UIImage] { get}
-    var refreshEmptyData   :UIImage   { get}
-    var refreshErrorData   :UIImage   { get}
-    var refreshNetAvailable:Bool      { get}
+    var refreshHeaderData  :[UIImage] {get}
+    var refreshFooterData  :[UIImage] {get}
     
-    @objc optional var refreshLoaderToast : String {get}
-    @objc optional var refreshErrorToast  : String {get}
-    @objc optional var refreshEmptyToast  : String {get}
+    @objc optional var refreshLogo       : UIImage{get}
+    @objc optional var refreshTitle      : NSAttributedString {get}
+    @objc optional var refreshSubtitle   : NSAttributedString {get}
+    
+    @objc optional var refreshVertica     : CGFloat{get}
+    @objc optional var refreshCustomView  : UIView {get}
+}
+public protocol ATRefreshDelegate : NSObjectProtocol {
+    func refreshData(page :Int)
 }
 
 public let at_iphone                 = ATRefresh.iPhone_Bar()
