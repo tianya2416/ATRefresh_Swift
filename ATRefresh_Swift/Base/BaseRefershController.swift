@@ -11,11 +11,11 @@ import SnapKit
 import ATKit_Swift
 import Alamofire
 
-private var refreshEmptyData : UIImage = UIImage(named: "icon_data_empty") ?? UIImage()
-private let refreshErrorData : UIImage = UIImage(named: "icon_net_error") ?? UIImage()
+public var refreshEmptyData : UIImage = UIImage(named: "icon_data_empty") ?? UIImage()
+public let refreshErrorData : UIImage = UIImage(named: "icon_net_error") ?? UIImage()
 
 private let refreshLoaderToast: String = "Data loading..."
-private let refreshErrorToast : String = "Net Error..."
+private var refreshErrorToast : String = "Net Error..."
 private var refreshEmptyToast : String = "Data Empty..."
 
 class BaseRefershController: UIViewController {
@@ -61,12 +61,12 @@ class BaseRefershController: UIViewController {
     public func endRefresh(more:Bool){
         self.refreshData.endRefresh(more: more)
     }
-    public func endRefreshFailure(error :String? = nil){
+    public func endRefreshFailure(error :String = refreshErrorToast){
+        refreshErrorToast = error
         self.refreshData.endRefreshFailure()
     }
 }
 extension BaseRefershController : ATRefreshDataSource{
-    
     var refreshHeaderData: [UIImage] {
         return self.images
     }
@@ -74,8 +74,7 @@ extension BaseRefershController : ATRefreshDataSource{
         return self.images
     }
     var refreshLogo: UIImage{
-        let newImage : UIImage = UIImage.animatedImage(with: self.images, duration: 0.35)!
-        let image : UIImage = (self.refreshData.refreshing ? newImage : (self.refreshNetAvailable ? refreshEmptyData : refreshErrorData))
+        let image : UIImage = (self.refreshData.refreshing ? UIImage.animatedImage(with: self.images, duration: 0.35)! : (self.refreshNetAvailable ? refreshEmptyData : refreshErrorData))
         return image
     }
     var refreshTitle: NSAttributedString{
@@ -85,11 +84,10 @@ extension BaseRefershController : ATRefreshDataSource{
         let color : UIColor = UIColor(hex: "666666")
         dic.updateValue(font, forKey: .font)
         dic.updateValue(color, forKey: .foregroundColor)
-        let att : NSAttributedString = NSAttributedString(string:"\r\n"+text, attributes:(dic))
+        let att : NSAttributedString = NSAttributedString(string:text, attributes:(dic))
         return att
     }
 }
-
 extension BaseRefershController : ATRefreshDelegate{
     @objc public func refreshData(page:Int){}
 }

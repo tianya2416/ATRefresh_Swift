@@ -39,13 +39,13 @@ open class ATRefreshData: NSObject {
         if options.rawValue & ATRefreshOption.header.rawValue == 1  {
             //需要下拉刷新
             let header : MJRefreshGifHeader = MJRefreshGifHeader(refreshingTarget: self, refreshingAction: #selector(headerRefreshing))
-            header.stateLabel?.isHidden = true
-            header.isAutomaticallyChangeAlpha = true
-            header.lastUpdatedTimeLabel?.isHidden = true
             let headerImages =  self.dataSource?.refreshHeaderData ?? []
             if headerImages.count > 0 {
                 header.setImages([headerImages.first as Any], for: .idle)
                 header.setImages(headerImages, duration: 0.35, for: .refreshing)
+                header.stateLabel?.isHidden = true
+                header.isAutomaticallyChangeAlpha = true
+                header.lastUpdatedTimeLabel?.isHidden = true
             }
             if options.rawValue & ATRefreshOption.autoHeader.rawValue == 4 {
                 self.headerRefreshing()
@@ -58,17 +58,20 @@ open class ATRefreshData: NSObject {
             footer.triggerAutomaticallyRefreshPercent = 1
             footer.stateLabel?.isHidden = false
             footer.labelLeftInset = -22
+            footer.setTitle("", for: .idle)
             let footerImages =  self.dataSource?.refreshFooterData ?? []
             if footerImages.count > 0 {
+                
                 footer.setImages([footerImages.first as Any], for: .idle)
                 footer.setImages(footerImages, duration: 0.35, for: .refreshing)
+                
+                footer.setTitle(" —— 我是有底线的 ——  ", for: .noMoreData)
+                footer.setTitle("", for: .pulling)
+                footer.setTitle("", for: .refreshing)
+                footer.setTitle("", for: .willRefresh)
+                
+                footer.stateLabel?.font = UIFont.systemFont(ofSize: 14)
             }
-            footer.setTitle(" —— 我是有底线的 ——  ", for: .noMoreData)
-            footer.setTitle("", for: .pulling)
-            footer.setTitle("", for: .refreshing)
-            footer.setTitle("", for: .willRefresh)
-            footer.setTitle("", for: .idle)
-            footer.stateLabel?.font = UIFont.systemFont(ofSize: 14)
             if options.rawValue & ATRefreshOption.autoFooter.rawValue == 8 {
                 self.footerRefreshing()
             }
@@ -170,29 +173,51 @@ extension ATRefreshData :EmptyDataSetSource{
     }
     //MARK: logo and title space
     open func spaceHeight(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
-        return 1
+        return self.dataSource?.refreshSpace ?? 15
     }
-    //MARK: customView if you need
-    open func customView(forEmptyDataSet scrollView: UIScrollView) -> UIView? {
-        return self.dataSource?.refreshCustomView
+    open func backgroundColor(forEmptyDataSet scrollView: UIScrollView) -> UIColor? {
+        return self.dataSource?.refreshColor ?? UIColor.white
+    }
+    open func imageAnimation(forEmptyDataSet scrollView: UIScrollView) -> CAAnimation? {
+        return self.dataSource?.refreshAnimation
+    }
+    open func buttonTitle(forEmptyDataSet scrollView: UIScrollView, for state: UIControl.State) -> NSAttributedString? {
+        if self.refreshing {
+            return nil
+        }
+        guard let button  = self.dataSource?.refreshButton else { return nil }
+        return button.attributedTitle(for: state)
+    }
+    open func buttonBackgroundImage(forEmptyDataSet scrollView: UIScrollView, for state: UIControl.State) -> UIImage? {
+        if self.refreshing {
+            return nil
+        }
+        guard let button  = self.dataSource?.refreshButton else { return nil }
+        return button.backgroundImage(for: state)
     }
 }
 extension ATRefreshData :EmptyDataSetDelegate{
     //MARK:DZNEmptyDataSetDelegate
     open func emptyDataSetShouldAnimateImageView(_ scrollView: UIScrollView) -> Bool {
-        return false
+        return self.refreshing
     }
     open func emptyDataSetShouldDisplay(_ scrollView: UIScrollView) -> Bool {
         return true
     }
     open func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView) -> Bool {
-        return true
+        return !self.refreshing
     }
     open func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
         return !self.refreshing
     }
     open func emptyDataSet(_ scrollView: UIScrollView, didTapView view: UIView) {
+        guard (self.dataSource?.refreshButton) != nil else {
+            self.refreshing ? nil : self.headerRefreshing()
+            return
+        }
+    }
+    open func emptyDataSet(_ scrollView: UIScrollView, didTapButton button: UIButton) {
+        guard (self.dataSource?.refreshButton) != nil else { return }
         self.refreshing ? nil : self.headerRefreshing()
     }
-
 }

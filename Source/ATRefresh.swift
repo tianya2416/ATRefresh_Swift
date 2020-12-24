@@ -23,15 +23,19 @@ public struct ATRefreshOption :OptionSet {
 }
 
 @objc public protocol ATRefreshDataSource : NSObjectProtocol {
-    var refreshHeaderData  :[UIImage] {get}
-    var refreshFooterData  :[UIImage] {get}
     
-    @objc optional var refreshLogo       : UIImage{get}
-    @objc optional var refreshTitle      : NSAttributedString {get}
-    @objc optional var refreshSubtitle   : NSAttributedString {get}
+    @objc optional var refreshHeaderData  :[UIImage] {get}
+    @objc optional var refreshFooterData  :[UIImage] {get}
     
-    @objc optional var refreshVertica     : CGFloat{get}
-    @objc optional var refreshCustomView  : UIView {get}
+    @objc optional var refreshLogo        : UIImage{get}
+    @objc optional var refreshTitle       : NSAttributedString {get}
+    @objc optional var refreshSubtitle    : NSAttributedString {get}
+
+    @objc optional var refreshVertica     : CGFloat {get}
+    @objc optional var refreshSpace       : CGFloat {get}
+    @objc optional var refreshColor       : UIColor {get}
+    @objc optional var refreshButton      : UIButton{get}
+    @objc optional var refreshAnimation   : CAAnimation{get}
 }
 public protocol ATRefreshDelegate : NSObjectProtocol {
     func refreshData(page :Int)

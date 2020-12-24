@@ -60,7 +60,7 @@
         self.refreshData.endRefreshFailure()
     }
     
-3、inheritance BaseRefershController 
+3、extends BaseRefershController 
     
     3、1 无下拉刷新、无上拉加载
     self.setupRefresh(scrollView: self.tableView, options:.none);
@@ -73,25 +73,28 @@
     
     3.4 有下拉刷新、有上拉加载
     self.setupRefresh(scrollView: self.tableView, options:.defaults);
-   
-     For Example
-     let size : Int = 40;
-     ApiMoya.apiMoyaRequest(target: .apiClassify(page: page, size: size, group: "male", name: "玄幻"), sucesss: { (json) in
-         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {//看清楚动画
-             if page == 1{
-                 self.listData.removeAll();
-             }
-             var arrayDatas :[ATGroupModel] = [];
-             if let data = [ATGroupModel].deserialize(from: json.rawString()){
-                 arrayDatas = data as! [ATGroupModel]
-             }
-             self.listData.append(contentsOf: arrayDatas);
-             self.tableView.reloadData();
-             self.endRefresh(more: arrayDatas.count >= size)
-         }
-     }) { (error) in
-         self.endRefreshFailure();
-     }
+    
+    override func refreshData(page: Int) {
+        let size : Int = 20
+        ApiMoya.apiMoyaRequest(target: .apiClassify(page: page, size: size, group: "male", name: "玄幻"), sucesss: { (json) in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {//看清楚动画
+                
+                if page == 1{
+                    self.listData.removeAll();
+                }
+                var arrayDatas :[ATGroupModel] = [];
+                if let data = [ATGroupModel].deserialize(from: json.rawString()){
+                    print(data.count)
+                    arrayDatas = data as! [ATGroupModel]
+                }
+                self.listData.append(contentsOf: arrayDatas);
+                self.tableView.reloadData()
+                self.endRefresh(more: arrayDatas.count > 0)
+            }
+        }) { (error) in
+            self.endRefreshFailure(error:error);
+        }
+    }
        
 4、ATRefresh_ObjectC版本:
     
