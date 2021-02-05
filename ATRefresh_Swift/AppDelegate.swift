@@ -10,8 +10,8 @@ import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
+    let age = 30
+    
     var window: UIWindow?
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         self.window = UIWindow.init(frame: UIScreen.main.bounds)
@@ -21,6 +21,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.rootViewController = nvc;
         return true
     }
-
+ 
 }
-

@@ -27,7 +27,7 @@ public struct ATRefreshOption :OptionSet {
     @objc optional var refreshHeaderData  :[UIImage] {get}
     @objc optional var refreshFooterData  :[UIImage] {get}
     
-    @objc optional var refreshLogo        : UIImage{get}
+    @objc optional var refreshLogo        : UIImage {get}
     @objc optional var refreshTitle       : NSAttributedString {get}
     @objc optional var refreshSubtitle    : NSAttributedString {get}
 
@@ -49,22 +49,18 @@ public let at_iphoneX                = at_iphone.iphoneX  //是否是有刘海
 
 public class ATRefresh : NSObject{
     class func iPhone_Bar() ->(iphoneX :Bool,statusBar : CGFloat,tabBar : CGFloat){
-        if let window = UIApplication.shared.delegate?.window {
-            if #available(iOS 11.0, *) {
-                let inset : UIEdgeInsets = window!.safeAreaInsets
-                return (inset.bottom > 0, inset.top,inset.bottom)
-            } else {
-                 return (false,20,0)
-            }
+        guard let  window = UIApplication.shared.delegate?.window else { return (false,20,0) }
+        if #available(iOS 11.0, *) {
+            let inset : UIEdgeInsets = window!.safeAreaInsets
+            return (inset.bottom > 0, inset.top,inset.bottom)
+        } else {
+            return (false,20,0)
         }
-        return (false,20,0)
     }
     
 }
-
-public extension UIImage{
+extension UIImage{
     class func imageWithColor(color:UIColor) -> UIImage{
-        
          let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
          UIGraphicsBeginImageContext(rect.size)
          let context = UIGraphicsGetCurrentContext()
@@ -76,7 +72,7 @@ public extension UIImage{
      }
 }
 
-public extension UIColor {
+extension UIColor {
     convenience init(hex string: String) {
       var hex = string.hasPrefix("#")
         ? String(string.dropFirst())

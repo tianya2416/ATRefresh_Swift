@@ -10,11 +10,11 @@ import EmptyDataSet_Swift
 
 private let RefreshPageStart : Int = (1)
 
-open class ATRefreshData: NSObject {
-    weak open var dataSource : ATRefreshDataSource? = nil
-    weak open var delegate   : ATRefreshDelegate? = nil
-    open var _refreshing : Bool = false
-    open var refreshing  : Bool{
+public class ATRefreshData: NSObject {
+    weak var dataSource : ATRefreshDataSource? = nil
+    weak var delegate   : ATRefreshDelegate? = nil
+    var _refreshing : Bool = false
+    var refreshing  : Bool{
         set{
             _refreshing = newValue
             guard let scrollView = self.scrollView else { return }
@@ -28,7 +28,7 @@ open class ATRefreshData: NSObject {
     weak private var scrollView : UIScrollView? = nil
     private var currentPage   : Int = 0
     //MARK:设置刷新控件 子类可在refreshData中发起网络请求, 请求结束后回调endRefresh结束刷新动作
-    open func setupRefresh(scrollView:UIScrollView,options:ATRefreshOption){
+    func setupRefresh(scrollView:UIScrollView,options:ATRefreshOption){
         scrollView.emptyDataSetSource = self
         scrollView.emptyDataSetDelegate = self
         self.scrollView = scrollView
@@ -79,14 +79,13 @@ open class ATRefreshData: NSObject {
         }
     }
     //MARK:分页请求一开始page = 1
-    open func refreshData(page:Int){
-        if let delegate = self.delegate {
-            delegate.refreshData(page: page)
-        }
+    func refreshData(page:Int){
+        guard let delegate = self.delegate else { return }
+        delegate.refreshData(page: page)
         self.currentPage = page
     }
     //MARK:加载成功 是否有下一页数据
-    open func endRefresh(more:Bool){
+    func endRefresh(more:Bool){
         self.baseEndRefreshing()
         guard let scrollView = self.scrollView else { return }
         guard let mj_footer = scrollView.mj_footer else { return }
@@ -114,18 +113,18 @@ open class ATRefreshData: NSObject {
         }
     }
     //MARK:加载失败
-    open func endRefreshFailure(){
+    func endRefreshFailure(){
         if self.currentPage > RefreshPageStart {
             self.currentPage = self.currentPage - 1
         }
         self.baseEndRefreshing()
         self.reloadEmptyData()
         guard let scrollView = self.scrollView else { return }
-        guard let mj_footer = scrollView.mj_header else { return }
-        mj_footer.isRefreshing ? mj_footer.state = .idle : nil
+        guard let mj_footer = scrollView.mj_footer else { return }
+        mj_footer.isRefreshing ? (mj_footer.state = .idle) : (mj_footer.isHidden = true)
     }
     //MARK: load first page
-    @objc open func headerRefreshing(){
+    @objc func headerRefreshing(){
         if self.refreshing == false {
             self.refreshing = true
             self.currentPage = RefreshPageStart
@@ -133,7 +132,7 @@ open class ATRefreshData: NSObject {
         }
     }
     //MARK:load foot
-    @objc open func footerRefreshing(){
+    @objc func footerRefreshing(){
         if self.refreshing == false {
             self.refreshing = true
             self.currentPage = self.currentPage + 1
@@ -156,39 +155,39 @@ open class ATRefreshData: NSObject {
 }
 extension ATRefreshData :EmptyDataSetSource{
     //MARK:title
-    open func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+    public func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
         return self.dataSource?.refreshTitle
     }
     //MARK:subTitle
-    open func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+    public func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
         return self.dataSource?.refreshSubtitle
     }
     //MARK:logo
-    open func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
+    public func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
         return self.dataSource?.refreshLogo
     }
     //MARK:logo location bottom + top -
-    open func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
+    public func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
         return self.dataSource?.refreshVertica ?? (-(at_iphone.statusBar + 44)/2)
     }
     //MARK: logo and title space
-    open func spaceHeight(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
+    public func spaceHeight(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
         return self.dataSource?.refreshSpace ?? 15
     }
-    open func backgroundColor(forEmptyDataSet scrollView: UIScrollView) -> UIColor? {
+    public func backgroundColor(forEmptyDataSet scrollView: UIScrollView) -> UIColor? {
         return self.dataSource?.refreshColor ?? UIColor.white
     }
-    open func imageAnimation(forEmptyDataSet scrollView: UIScrollView) -> CAAnimation? {
+    public func imageAnimation(forEmptyDataSet scrollView: UIScrollView) -> CAAnimation? {
         return self.dataSource?.refreshAnimation
     }
-    open func buttonTitle(forEmptyDataSet scrollView: UIScrollView, for state: UIControl.State) -> NSAttributedString? {
+    public func buttonTitle(forEmptyDataSet scrollView: UIScrollView, for state: UIControl.State) -> NSAttributedString? {
         if self.refreshing {
             return nil
         }
         guard let button  = self.dataSource?.refreshButton else { return nil }
         return button.attributedTitle(for: state)
     }
-    open func buttonBackgroundImage(forEmptyDataSet scrollView: UIScrollView, for state: UIControl.State) -> UIImage? {
+    public func buttonBackgroundImage(forEmptyDataSet scrollView: UIScrollView, for state: UIControl.State) -> UIImage? {
         if self.refreshing {
             return nil
         }
@@ -198,25 +197,25 @@ extension ATRefreshData :EmptyDataSetSource{
 }
 extension ATRefreshData :EmptyDataSetDelegate{
     //MARK:DZNEmptyDataSetDelegate
-    open func emptyDataSetShouldAnimateImageView(_ scrollView: UIScrollView) -> Bool {
+    public func emptyDataSetShouldAnimateImageView(_ scrollView: UIScrollView) -> Bool {
         return self.refreshing
     }
-    open func emptyDataSetShouldDisplay(_ scrollView: UIScrollView) -> Bool {
+    public func emptyDataSetShouldDisplay(_ scrollView: UIScrollView) -> Bool {
         return true
     }
-    open func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView) -> Bool {
+    public func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView) -> Bool {
         return !self.refreshing
     }
-    open func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
+    public func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
         return !self.refreshing
     }
-    open func emptyDataSet(_ scrollView: UIScrollView, didTapView view: UIView) {
+    public func emptyDataSet(_ scrollView: UIScrollView, didTapView view: UIView) {
         guard (self.dataSource?.refreshButton) != nil else {
             self.refreshing ? nil : self.headerRefreshing()
             return
         }
     }
-    open func emptyDataSet(_ scrollView: UIScrollView, didTapButton button: UIButton) {
+    public func emptyDataSet(_ scrollView: UIScrollView, didTapButton button: UIButton) {
         guard (self.dataSource?.refreshButton) != nil else { return }
         self.refreshing ? nil : self.headerRefreshing()
     }

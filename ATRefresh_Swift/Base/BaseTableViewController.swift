@@ -10,7 +10,7 @@ import UIKit
 
 class BaseTableViewController: BaseRefershController {
     lazy var tableView : UITableView = {
-        let tableView : UITableView = UITableView.init(frame: CGRect.zero, style:.grouped);
+        let tableView : UITableView = UITableView(frame: CGRect.zero, style:.grouped);
         tableView.dataSource = self;
         tableView.delegate = self;
         tableView.rowHeight = UITableView.automaticDimension;
@@ -19,8 +19,9 @@ class BaseTableViewController: BaseRefershController {
         tableView.separatorStyle = .none;
         tableView.showsVerticalScrollIndicator = false;
         tableView.register(UITableViewCell.classForCoder(), forCellReuseIdentifier: NSStringFromClass(UICollectionViewCell.classForCoder()))
-        return tableView;
+        return tableView
     }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addSubview(self.tableView);

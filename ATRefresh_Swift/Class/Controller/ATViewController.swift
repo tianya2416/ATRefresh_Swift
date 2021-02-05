@@ -7,9 +7,6 @@
 //
 
 import UIKit
-//  pod lib lint ATRefresh_Swift.podspec  --allow-warnings --sources='https://github.com/CocoaPods/Specs.git'
-//pod trunk push --allow-warnings --sources='https://github.com/CocoaPods/Specs.git'
-//  pod trunk push ATRefresh_Swift.podspec  --allow-warnings --sources='https://github.com/CocoaPods/Specs.git'
 class ATViewController: BaseTableViewController {
     lazy var listData : [String] = {
         return []
@@ -19,11 +16,10 @@ class ATViewController: BaseTableViewController {
         self.setupRefresh(scrollView: self.tableView, options: .defaults);
     }
     override func refreshData(page: Int) {
-        DispatchQueue.main.asyncAfter(deadline: .now()+2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             self.listData = ["下拉刷新","上拉加载","上拉下拉","无上下拉","ConnectionView","SQLite"];
-            self.endRefresh(more: false);
-            self.tableView.reloadData();
-    
+            self.endRefresh(more: false)
+            self.tableView.reloadData()
         }
     }
     override func numberOfSections(in tableView: UITableView) -> Int {
