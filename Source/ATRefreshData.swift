@@ -11,10 +11,10 @@ import EmptyDataSet_Swift
 private let RefreshPageStart : Int = (1)
 
 public class ATRefreshData: NSObject {
-    weak var dataSource : ATRefreshDataSource? = nil
-    weak var delegate   : ATRefreshDelegate? = nil
-    var _refreshing : Bool = false
-    var refreshing  : Bool{
+    public weak var dataSource : ATRefreshDataSource? = nil
+    public weak var delegate   : ATRefreshDelegate? = nil
+    public var _refreshing : Bool = false
+    public var refreshing  : Bool{
         set{
             _refreshing = newValue
             guard let scrollView = self.scrollView else { return }
@@ -25,10 +25,10 @@ public class ATRefreshData: NSObject {
             return _refreshing
         }
     }
-    weak private var scrollView : UIScrollView? = nil
+    private weak var scrollView : UIScrollView? = nil
     private var currentPage   : Int = 0
     //MARK:设置刷新控件 子类可在refreshData中发起网络请求, 请求结束后回调endRefresh结束刷新动作
-    func setupRefresh(scrollView:UIScrollView,options:ATRefreshOption){
+    public func setupRefresh(scrollView:UIScrollView,options:ATRefreshOption){
         scrollView.emptyDataSetSource = self
         scrollView.emptyDataSetDelegate = self
         self.scrollView = scrollView
@@ -79,13 +79,13 @@ public class ATRefreshData: NSObject {
         }
     }
     //MARK:分页请求一开始page = 1
-    func refreshData(page:Int){
+    public func refreshData(page:Int){
         guard let delegate = self.delegate else { return }
         delegate.refreshData(page: page)
         self.currentPage = page
     }
     //MARK:加载成功 是否有下一页数据
-    func endRefresh(more:Bool){
+    public func endRefresh(more:Bool){
         self.baseEndRefreshing()
         guard let scrollView = self.scrollView else { return }
         guard let mj_footer = scrollView.mj_footer else { return }
@@ -113,7 +113,7 @@ public class ATRefreshData: NSObject {
         }
     }
     //MARK:加载失败
-    func endRefreshFailure(){
+    public func endRefreshFailure(){
         if self.currentPage > RefreshPageStart {
             self.currentPage = self.currentPage - 1
         }
