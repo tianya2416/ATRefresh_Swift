@@ -51,8 +51,8 @@ public class ATRefresh : NSObject{
     class func iPhone_Bar() ->(iphoneX :Bool,statusBar : CGFloat,tabBar : CGFloat){
         guard let  window = UIApplication.shared.delegate?.window else { return (false,20,0) }
         if #available(iOS 11.0, *) {
-            let inset : UIEdgeInsets = window!.safeAreaInsets
-            return (inset.bottom > 0, inset.top,inset.bottom)
+            let inset : UIEdgeInsets = window.safeAreaInsets
+            return (inset.bottom > 0, inset.top > 0 ? inset.top : 20,inset.bottom)
         } else {
             return (false,20,0)
         }
