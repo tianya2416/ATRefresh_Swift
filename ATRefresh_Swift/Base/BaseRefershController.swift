@@ -15,11 +15,11 @@ public var refreshEmptyData : UIImage = UIImage(named: "icon_data_empty") ?? UII
 public let refreshErrorData : UIImage = UIImage(named: "icon_net_error") ?? UIImage()
 
 private let refreshLoaderToast: String = "Data loading..."
-private var refreshErrorToast : String = "Net Error..."
 private var refreshEmptyToast : String = "Data Empty..."
 
-class BaseRefershController: UIViewController {
+class BaseRefershController: BaseViewController {
     //Example
+    private var refreshErrorToast :String? = nil
     deinit {
         debugPrint(self.classForCoder)
     }
@@ -29,26 +29,18 @@ class BaseRefershController: UIViewController {
         refresh.dataSource = self
         return refresh
     }()
-    var refreshNetAvailable : Bool{
-        get{
-            return NetworkReachabilityManager()!.isReachable
-        }
-    }
     private lazy var images: [UIImage] = {
         var images :[UIImage] = []
         for i in 0...35{
             let image = UIImage.init(named:String("下拉loading_00") + String(i < 10 ? ("0"+String(i)) : String(i)));
-            if image != nil {
-                images.append(image!)
+            if let im = image {
+                images.append(im)
             }
         }
         return images
     }()
     override public func viewDidLoad() {
         super.viewDidLoad()
-        self.edgesForExtendedLayout = []
-        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
-        self.view.backgroundColor = UIColor.white
     }
     public func setupRefresh(scrollView:UIScrollView,
                              options:ATRefreshOption,
@@ -61,8 +53,8 @@ class BaseRefershController: UIViewController {
     public func endRefresh(more:Bool){
         self.refreshData.endRefresh(more: more)
     }
-    public func endRefreshFailure(error :String = refreshErrorToast){
-        refreshErrorToast = error
+    public func endRefreshFailure(error :String? = nil){
+        self.refreshErrorToast = error
         self.refreshData.endRefreshFailure()
     }
 }
@@ -74,11 +66,11 @@ extension BaseRefershController : ATRefreshDataSource{
         return self.images
     }
     var refreshLogo: UIImage{
-        let image : UIImage = (self.refreshData.refreshing ? UIImage.animatedImage(with: self.images, duration: 0.35)! : (self.refreshNetAvailable ? refreshEmptyData : refreshErrorData))
+        let image : UIImage = self.refreshData.refreshing ? UIImage.animatedImage(with: self.images, duration: 0.35)! : self.errorData
         return image
     }
     var refreshTitle: NSAttributedString{
-        let text :String = self.refreshData.refreshing ? refreshLoaderToast : (!self.refreshNetAvailable ? refreshErrorToast : refreshEmptyToast)
+        let text :String = self.refreshData.refreshing ? refreshLoaderToast : self.toast
         var dic : [NSAttributedString.Key : Any ] = [:]
         let font : UIFont = UIFont.systemFont(ofSize: 16)
         let color : UIColor = UIColor(hex: "666666")
@@ -87,13 +79,15 @@ extension BaseRefershController : ATRefreshDataSource{
         let att : NSAttributedString = NSAttributedString(string:text, attributes:(dic))
         return att
     }
+    var toast :String{
+        guard let toast = self.refreshErrorToast else { return  refreshEmptyToast}
+        return toast
+    }
+    var errorData :UIImage{
+        return self.refreshErrorToast != nil ? refreshErrorData : refreshEmptyData
+    }
 }
 extension BaseRefershController : ATRefreshDelegate{
     @objc public func refreshData(page:Int){}
 }
-extension BaseRefershController : UIGestureRecognizerDelegate{
-    //MARK:UIGestureRecognizerDelegate
-    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
-    }
-}
+

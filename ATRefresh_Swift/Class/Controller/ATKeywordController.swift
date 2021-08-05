@@ -176,8 +176,7 @@ class ATFavController: BaseTableViewController {
         return att
     }
     override var refreshLogo: UIImage{
-        
-        let image : UIImage = (self.refreshData.refreshing ? UIImage(named:"icon_load_data")! : (self.refreshNetAvailable ? refreshEmptyData : refreshErrorData))
+        let image : UIImage = self.refreshData.refreshing ? UIImage(named:"icon_load_data")!  : self.errorData
         return image
     }
     var refreshAnimation: CAAnimation{
