@@ -9,11 +9,10 @@ import UIKit
 import EmptyDataSet_Swift
 
 private let RefreshPageStart : Int = (1)
-
 public class ATRefreshData: NSObject {
     public weak var dataSource : ATRefreshDataSource? = nil
     public weak var delegate   : ATRefreshDelegate? = nil
-    public var _refreshing : Bool = false
+    //MARK：是否正在刷新
     public var refreshing  : Bool{
         set{
             _refreshing = newValue
@@ -25,52 +24,55 @@ public class ATRefreshData: NSObject {
             return _refreshing
         }
     }
-    private weak var scrollView : UIScrollView? = nil
-    private var currentPage   : Int = 0
+    //MARK:refreshing 有动画
+    public func beginRefreshing(){
+        guard let scrollView = self.scrollView else { return }
+        guard let mj_header = scrollView.mj_header else { return }
+        mj_header.beginRefreshing()
+    }
+    private weak var scrollView :UIScrollView? = nil
+    private var currentPage :Int = 0
+    private var _refreshing :Bool = false
     //MARK:设置刷新控件 子类可在refreshData中发起网络请求, 请求结束后回调endRefresh结束刷新动作
     public func setupRefresh(scrollView:UIScrollView,options:ATRefreshOption){
         scrollView.emptyDataSetSource = self
         scrollView.emptyDataSetDelegate = self
         self.scrollView = scrollView
-        if options.rawValue == 0{
-            //无下拉上拉
+        if options.rawValue == 0{//无下拉上拉
             self.headerRefreshing()
         }
-        if options.rawValue & ATRefreshOption.header.rawValue == 1  {
-            //需要下拉刷新
+        if options.rawValue & ATRefreshOption.header.rawValue == 1  {//需要下拉刷新
             let header : MJRefreshGifHeader = MJRefreshGifHeader(refreshingTarget: self, refreshingAction: #selector(headerRefreshing))
-            let headerImages =  self.dataSource?.refreshHeaderData ?? []
-            if headerImages.count > 0 {
-                header.setImages([headerImages.first as Any], for: .idle)
-                header.setImages(headerImages, duration: 0.35, for: .refreshing)
-                header.stateLabel?.isHidden = true
-                header.isAutomaticallyChangeAlpha = true
-                header.lastUpdatedTimeLabel?.isHidden = true
+            if let headerImages = self.dataSource?.refreshHeaderData {
+                if headerImages.count > 0 {
+                    header.setImages([headerImages.first as Any], for: .idle)
+                    header.setImages(headerImages, duration: 0.35, for: .refreshing)
+                    header.stateLabel?.isHidden = true
+                    header.isAutomaticallyChangeAlpha = true
+                    header.lastUpdatedTimeLabel?.isHidden = true
+                }
             }
             if options.rawValue & ATRefreshOption.autoHeader.rawValue == 4 {
                 self.headerRefreshing()
             }
             scrollView.mj_header = header
         }
-        if (options.rawValue & ATRefreshOption.footer.rawValue) == 2 {
-            //需要上拉加载
+        if (options.rawValue & ATRefreshOption.footer.rawValue) == 2 {//需要上拉加载
             let footer : MJRefreshAutoGifFooter = MJRefreshAutoGifFooter(refreshingTarget: self, refreshingAction: #selector(footerRefreshing))
             footer.triggerAutomaticallyRefreshPercent = 1
             footer.stateLabel?.isHidden = false
             footer.labelLeftInset = -22
             footer.setTitle("", for: .idle)
-            let footerImages =  self.dataSource?.refreshFooterData ?? []
-            if footerImages.count > 0 {
-                
-                footer.setImages([footerImages.first as Any], for: .idle)
-                footer.setImages(footerImages, duration: 0.35, for: .refreshing)
-                
-                footer.setTitle(" —— 我是有底线的 ——  ", for: .noMoreData)
-                footer.setTitle("", for: .pulling)
-                footer.setTitle("", for: .refreshing)
-                footer.setTitle("", for: .willRefresh)
-                
-                footer.stateLabel?.font = UIFont.systemFont(ofSize: 14)
+            if let footerImages = self.dataSource?.refreshFooterData {
+                if footerImages.count > 0 {
+                    footer.setImages([footerImages.first as Any], for: .idle)
+                    footer.setImages(footerImages, duration: 0.35, for: .refreshing)
+                    footer.setTitle(" —— 我是有底线的 ——  ", for: .noMoreData)
+                    footer.setTitle("", for: .pulling)
+                    footer.setTitle("", for: .refreshing)
+                    footer.setTitle("", for: .willRefresh)
+                    footer.stateLabel?.font = UIFont.systemFont(ofSize: 14)
+                }
             }
             if options.rawValue & ATRefreshOption.autoFooter.rawValue == 8 {
                 self.footerRefreshing()
@@ -89,25 +91,19 @@ public class ATRefreshData: NSObject {
         self.baseEndRefreshing()
         guard let scrollView = self.scrollView else { return }
         guard let mj_footer = scrollView.mj_footer else { return }
+        if let footer = mj_footer as? MJRefreshAutoStateFooter {
+            footer.stateLabel?.textColor = UIColor(hex: "666666")
+            footer.stateLabel?.font = UIFont.systemFont(ofSize: 14)
+        }
         if more {
             mj_footer.state = .idle
             mj_footer.isHidden = false
-            if mj_footer is MJRefreshAutoStateFooter{
-                let footer:MJRefreshAutoStateFooter = mj_footer as! MJRefreshAutoStateFooter
-                footer.stateLabel?.textColor = UIColor(hex: "666666")
-                footer.stateLabel?.font = UIFont.systemFont(ofSize: 14)
-            }
         }else{
-            mj_footer.state = .noMoreData
-            if mj_footer is  MJRefreshAutoStateFooter{
-                let footer:MJRefreshAutoStateFooter = mj_footer as! MJRefreshAutoStateFooter
-                footer.stateLabel?.textColor = UIColor(hex: "999999")
-                footer.stateLabel?.font = UIFont.systemFont(ofSize: 14)
-            }
             DispatchQueue.main.asyncAfter(deadline:.now() + 0.01) {
                 let height : CGFloat = (scrollView.contentSize.height)
                 let sizeHeight : CGFloat = (scrollView.frame.size.height)
                 let res : Bool = (self.currentPage == RefreshPageStart) || (height < sizeHeight)
+                mj_footer.state = .noMoreData
                 mj_footer.isHidden = res
             }
         }
@@ -123,8 +119,14 @@ public class ATRefreshData: NSObject {
         guard let mj_footer = scrollView.mj_footer else { return }
         mj_footer.isRefreshing ? (mj_footer.state = .idle) : (mj_footer.isHidden = true)
     }
+    private func baseEndRefreshing(){
+        self.refreshing = false
+        guard let scrollView = self.scrollView else { return }
+        guard let mj_header = scrollView.mj_header else { return }
+        mj_header.isRefreshing ? mj_header.endRefreshing() : nil
+    }
     //MARK: load first page
-    @objc func headerRefreshing(){
+    @objc private func headerRefreshing(){
         if self.refreshing == false {
             self.refreshing = true
             self.currentPage = RefreshPageStart
@@ -132,18 +134,12 @@ public class ATRefreshData: NSObject {
         }
     }
     //MARK:load foot
-    @objc func footerRefreshing(){
+    @objc private func footerRefreshing(){
         if self.refreshing == false {
             self.refreshing = true
             self.currentPage = self.currentPage + 1
             self.refreshData(page: self.currentPage)
         }
-    }
-    private func baseEndRefreshing(){
-        self.refreshing = false
-        guard let scrollView = self.scrollView else { return }
-        guard let mj_header = scrollView.mj_header else { return }
-        mj_header.isRefreshing ? mj_header.endRefreshing() : nil
     }
     @objc private func reloadEmptyData(){
         guard let scrollView = self.scrollView else { return }
