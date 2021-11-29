@@ -108,7 +108,7 @@ class ATGroupSearchController: BaseTableViewController {
         return [row]
     }
 }
-class ATFavController: BaseTableViewController {
+class ATGroupCollectController: BaseTableViewController {
 
     lazy var listData : [ATGroupModel] = {
         return []

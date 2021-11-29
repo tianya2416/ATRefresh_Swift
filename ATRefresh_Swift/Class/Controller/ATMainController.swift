@@ -1,5 +1,5 @@
 //
-//  ATViewController.swift
+//  ATMainController.swift
 //  ATRefresh_Swift
 //
 //  Created by wangws1990 on 2020/5/9.
@@ -13,8 +13,8 @@ private let downandupload = "上拉下拉"
 private let none          = "无上下拉"
 
 private let gridView = "网格"
-private let gridSQL  = "数据库"
-class ATViewController: BaseTableViewController {
+private let gridSQL  = "数据存储"
+class ATMainController: BaseTableViewController {
     lazy var listData : [String] = {
         return []
     }()
@@ -52,7 +52,7 @@ class ATViewController: BaseTableViewController {
             self.navigationController?.pushViewController(ATGroupConnectionController(), animated:true)
             break
         case gridSQL:
-            self.navigationController?.pushViewController(ATSqlController(), animated:true)
+            self.navigationController?.pushViewController(ATGroupCacheController(), animated:true)
             break
         case download:
             UIViewController.rootTopPresentedController().navigationController?.pushViewController(ATGroupTableController(options: [.header,.autoHeader]), animated: true);

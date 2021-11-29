@@ -1,5 +1,5 @@
 //
-//  ATSqlController.swift
+//  ATGroupCacheController.swift
 //  ATRefresh_Swift
 //
 //  Created by wangws1990 on 2020/11/30.
@@ -8,19 +8,19 @@
 
 import UIKit
 
-class ATSqlController: BaseTableViewController {
+class ATGroupCacheController: BaseTableViewController {
 
     lazy var listData : [String] = {
         return []
     }()
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.showNavTitle(title: "")
+        self.showNavTitle(title: "数据存储")
         self.setupRefresh(scrollView: self.tableView, options: .defaults);
     }
     override func refreshData(page: Int) {
         DispatchQueue.main.asyncAfter(deadline: .now()+1) {
-            self.listData = ["keyword","model"];
+            self.listData = ["search","collect"];
             self.endRefresh(more: false);
             self.tableView.reloadData();
     
@@ -43,7 +43,7 @@ class ATSqlController: BaseTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true);
         let str = self.listData[indexPath.row];
-        if str == "keyword"{
+        if str == "search"{
             self.navigationController?.pushViewController(ATKeywordController(), animated:true)
         }else {
             self.navigationController?.pushViewController(ATFavController(), animated:true)
