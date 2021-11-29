@@ -1,6 +1,8 @@
 1、ATRefresh_Swift集成方式:
 
     pod 'ATRefresh_Swift'
+    ///或者可以这样
+    pod 'ATRefresh_Swift',    :git => 'https://github.com/tianya24/ATRefresh_Swift.git'
     
 2、ATRefresh_Swift使用方式:
 
