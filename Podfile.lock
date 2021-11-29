@@ -20,7 +20,7 @@ PODS:
 DEPENDENCIES:
   - Alamofire
   - ATKit_Swift
-  - EmptyDataSet-Swift (~> 5.0.0)
+  - EmptyDataSet-Swift
   - HandyJSON
   - Kingfisher
   - MJRefresh
@@ -54,6 +54,6 @@ SPEC CHECKSUMS:
   SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: c484caf0b291d373534cee7ee9eafe666f440771
+PODFILE CHECKSUM: 52c1d6ff23b93eb0045c50590893a2de8bd482f3
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.9.3

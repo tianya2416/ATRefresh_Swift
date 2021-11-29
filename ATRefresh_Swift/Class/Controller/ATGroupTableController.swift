@@ -13,8 +13,8 @@ class ATGroupTableController: BaseTableViewController {
         self.init();
         self.options = options;
     }
-    var options : ATRefreshOption = .none;
-    lazy var listData : [ATGroupModel] = {
+    private var options : ATRefreshOption = .none;
+    private lazy var listData : [ATGroupModel] = {
         return []
     }()
     override func viewDidLoad() {
@@ -31,14 +31,12 @@ class ATGroupTableController: BaseTableViewController {
                 if page == 1{
                     self.listData.removeAll();
                 }
-                var arrayDatas :[ATGroupModel] = [];
-                if let data = [ATGroupModel].deserialize(from: json.rawString()){
-                    print(data.count)
-                    arrayDatas = data as! [ATGroupModel]
+                let list = [ATGroupModel].deserialize(from: json.rawString()) ?? []
+                if let datas = list as? [ATGroupModel]{
+                    self.listData.append(contentsOf: datas)
                 }
-                self.listData.append(contentsOf: arrayDatas);
                 self.tableView.reloadData()
-                self.endRefresh(more: arrayDatas.count > 0)
+                self.endRefresh(more: list.count > 0)
             }
         }) { (error) in
             self.endRefreshFailure(error:error);

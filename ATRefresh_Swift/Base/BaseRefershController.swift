@@ -10,16 +10,8 @@ import UIKit
 import SnapKit
 import ATKit_Swift
 import Alamofire
-
-public var refreshEmptyData : UIImage = UIImage(named: "icon_data_empty") ?? UIImage()
-public let refreshErrorData : UIImage = UIImage(named: "icon_net_error") ?? UIImage()
-
-private let refreshLoaderToast: String = "Data loading..."
-private var refreshEmptyToast : String = "Data Empty..."
-
 class BaseRefershController: BaseViewController {
     //Example
-    private var refreshErrorToast :String? = nil
     deinit {
         debugPrint(self.classForCoder)
     }
@@ -29,62 +21,69 @@ class BaseRefershController: BaseViewController {
         refresh.dataSource = self
         return refresh
     }()
-    private lazy var images: [UIImage] = {
-        var images :[UIImage] = []
-        for i in 0...35{
-            let image = UIImage.init(named:String("下拉loading_00") + String(i < 10 ? ("0"+String(i)) : String(i)));
-            if let im = image {
-                images.append(im)
+    override public func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    public func setupRefresh(scrollView :UIScrollView,options :ATRefreshOption){
+        self.refreshData.setupRefresh(scrollView: scrollView, options: options)
+    }
+    public func endRefresh(more :Bool,empty :String = "数据空空如也...",image :String = "icon_data_empty"){
+        self.refreshEmptyToast = empty
+        self.refreshEmptyData = image
+        self.refreshData.endRefresh(more: more)
+    }
+    public func endRefreshFailure(error :String = "网络出现异常...",image :String = "icon_net_error"){
+        self.refreshEmptyToast = error
+        self.refreshEmptyData = image
+        self.refreshData.endRefreshFailure()
+    }
+    private let refreshLoaderToast :String  = "数据加载中..."
+    private var refreshEmptyToast  :String  = ""
+    private var refreshEmptyData   :String  = ""
+    private lazy var images: UIImage = {
+        let image  = UIImage(named: "icon_load_data")
+        return image ?? UIImage()
+    }()
+    private lazy var loading: [UIImage] = {
+        var images :[UIImage] = [];
+        for i in 1...35{
+            if let image = UIImage(named:"下拉loading_00\(i)"){
+                images.append(image)
             }
         }
         return images
     }()
-    override public func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    public func setupRefresh(scrollView:UIScrollView,
-                             options:ATRefreshOption,
-                             image:UIImage = refreshEmptyData,
-                             title:String = refreshEmptyToast){
-        refreshEmptyData  = image
-        refreshEmptyToast = title
-        self.refreshData.setupRefresh(scrollView: scrollView, options: options)
-    }
-    public func endRefresh(more:Bool){
-        self.refreshData.endRefresh(more: more)
-    }
-    public func endRefreshFailure(error :String? = nil){
-        self.refreshErrorToast = error
-        self.refreshData.endRefreshFailure()
-    }
 }
+
 extension BaseRefershController : ATRefreshDataSource{
     var refreshHeaderData: [UIImage] {
-        return self.images
+        return self.loading
     }
     var refreshFooterData: [UIImage] {
-        return self.images
+        return self.loading
     }
     var refreshLogo: UIImage{
-        let image : UIImage = self.refreshData.refreshing ? UIImage.animatedImage(with: self.images, duration: 0.35)! : self.errorData
-        return image
+        if self.refreshData.refreshing {
+            return self.images
+        }
+        return UIImage(named:self.refreshEmptyData) ?? UIImage()
+    }
+    var refreshAnimation: CAAnimation{
+        let animation = CABasicAnimation(keyPath: "transform")
+        animation.fromValue = NSValue(caTransform3D: CATransform3DIdentity)
+        animation.toValue = NSValue(caTransform3D: CATransform3DMakeRotation(CGFloat(Double.pi / 2), 0, 0, 1.0))
+        animation.duration = 0.3
+        animation.isCumulative = true
+        animation.repeatCount = MAXFLOAT
+        return animation
     }
     var refreshTitle: NSAttributedString{
-        let text :String = self.refreshData.refreshing ? refreshLoaderToast : self.toast
-        var dic : [NSAttributedString.Key : Any ] = [:]
-        let font : UIFont = UIFont.systemFont(ofSize: 16)
-        let color : UIColor = UIColor(hex: "666666")
-        dic.updateValue(font, forKey: .font)
-        dic.updateValue(color, forKey: .foregroundColor)
-        let att : NSAttributedString = NSAttributedString(string:text, attributes:(dic))
-        return att
+        let color = self.refreshData.refreshing ? UIColor(hex: "3991f0") : UIColor(hex: "a6a6a6")
+        let subTitle = self.refreshData.refreshing ? self.refreshLoaderToast : self.refreshEmptyToast
+        return NSAttributedString(string:subTitle, attributes:[.font :UIFont.systemFont(ofSize: 15),.foregroundColor :color])
     }
-    var toast :String{
-        guard let toast = self.refreshErrorToast else { return  refreshEmptyToast}
-        return toast
-    }
-    var errorData :UIImage{
-        return self.refreshErrorToast != nil ? refreshErrorData : refreshEmptyData
+    var refreshVertica: CGFloat{
+        return -(88)/2
     }
 }
 extension BaseRefershController : ATRefreshDelegate{

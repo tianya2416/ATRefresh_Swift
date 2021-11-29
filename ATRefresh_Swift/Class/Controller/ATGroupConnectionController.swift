@@ -25,18 +25,16 @@ class ATGroupConnectionController: BaseConnectionController {
             if page == 1{
                 self.listData.removeAll();
             }
-            var arrayDatas :[ATGroupModel] = [];
-            if let data = [ATGroupModel].deserialize(from: json.rawString()){
-                arrayDatas = data as! [ATGroupModel]
+            let list = [ATGroupModel].deserialize(from: json.rawString()) ?? []
+            if let datas = list as? [ATGroupModel]{
+                self.listData.append(contentsOf: datas)
             }
-            self.listData.append(contentsOf: arrayDatas);
             self.collectionView.reloadData();
-            self.endRefresh(more: arrayDatas.count > 0)
+            self.endRefresh(more: list.count > 0)
         }) { (error) in
-            self.endRefreshFailure();
+            self.endRefreshFailure(error: error);
         }
     }
-    //MARK:UICollectionViewDelegateFlowLayout
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 2;
     }

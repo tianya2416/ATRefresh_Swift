@@ -15,6 +15,7 @@ class ATSqlController: BaseTableViewController {
     }()
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.showNavTitle(title: "")
         self.setupRefresh(scrollView: self.tableView, options: .defaults);
     }
     override func refreshData(page: Int) {

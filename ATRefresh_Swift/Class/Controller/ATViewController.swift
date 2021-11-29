@@ -7,6 +7,13 @@
 //
 
 import UIKit
+private let download      = "下拉刷新"
+private let upload        = "上拉加载"
+private let downandupload = "上拉下拉"
+private let none          = "无上下拉"
+
+private let gridView = "网格"
+private let gridSQL  = "数据库"
 class ATViewController: BaseTableViewController {
     lazy var listData : [String] = {
         return []
@@ -16,8 +23,9 @@ class ATViewController: BaseTableViewController {
         self.setupRefresh(scrollView: self.tableView, options: .defaults);
     }
     override func refreshData(page: Int) {
+        debugPrint(page)
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.listData = ["下拉刷新","上拉加载","上拉下拉","无上下拉","ConnectionView","SQLite"];
+            self.listData = [download,upload,downandupload,none,gridView,gridSQL];
             self.endRefresh(more: false)
             self.tableView.reloadData()
         }
@@ -39,23 +47,25 @@ class ATViewController: BaseTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true);
         let str = self.listData[indexPath.row];
-        if str == "ConnectionView"{
+        switch str {
+        case gridView:
             self.navigationController?.pushViewController(ATGroupConnectionController(), animated:true)
-        }else if str == "SQLite"{
+            break
+        case gridSQL:
             self.navigationController?.pushViewController(ATSqlController(), animated:true)
-        }
-        else{
-            var options : ATRefreshOption = .none;
-            if str == "下拉刷新" {
-                options = ATRefreshOption(rawValue: ATRefreshOption.header.rawValue|ATRefreshOption.autoHeader.rawValue);
-            }else if str == "上拉加载"{
-                options = ATRefreshOption(rawValue: ATRefreshOption.footer.rawValue|ATRefreshOption.autoFooter.rawValue);
-            }else if str == "上拉下拉"{
-                options = .defaults;
-            }else{
-                options = .none;
-            }
-        UIViewController.rootTopPresentedController().navigationController?.pushViewController(ATGroupTableController(options: options), animated: true);
+            break
+        case download:
+            UIViewController.rootTopPresentedController().navigationController?.pushViewController(ATGroupTableController(options: [.header,.autoHeader]), animated: true);
+            break
+        case upload:
+            UIViewController.rootTopPresentedController().navigationController?.pushViewController(ATGroupTableController(options: [.footer,.autoFooter]), animated: true);
+            break
+        case downandupload:
+            UIViewController.rootTopPresentedController().navigationController?.pushViewController(ATGroupTableController(options: .defaults), animated: true);
+            break
+        default:
+            UIViewController.rootTopPresentedController().navigationController?.pushViewController(ATGroupTableController(options: .none), animated: true);
+            break
         }
     }
 }

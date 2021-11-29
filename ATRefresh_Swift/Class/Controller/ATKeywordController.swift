@@ -35,6 +35,7 @@ class ATKeywordController: BaseTableViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.showNavTitle(title: "关键词")
         self.view.backgroundColor = UIColor.white
         self.view.addSubview(self.searchBtn)
         self.searchBtn.snp.makeConstraints { (make) in
@@ -124,13 +125,12 @@ class ATFavController: BaseTableViewController {
             if page == 1{
                 self.listData.removeAll()
             }
-            var datas : [ATGroupModel] = []
-            if let data = [ATGroupModel].deserialize(from: json.rawString()){
-                datas = data as! [ATGroupModel]
+            let list = [ATGroupModel].deserialize(from: json.rawString()) ?? []
+            if let datas = list as? [ATGroupModel]{
+                self.listData.append(contentsOf: datas)
             }
-            self.listData.append(contentsOf: datas)
             self.tableView.reloadData()
-            self.endRefresh(more: datas.count >= 20)
+            self.endRefresh(more: list.count >= 20)
             
         }
     }
@@ -174,38 +174,5 @@ class ATFavController: BaseTableViewController {
         dic.updateValue(color, forKey: .foregroundColor)
         let att : NSAttributedString = NSAttributedString(string:"副标题提示,副标题提示,副标题提示,副标题提示,副标题提示\r\n", attributes:(dic))
         return att
-    }
-    override var refreshLogo: UIImage{
-        let image : UIImage = self.refreshData.refreshing ? UIImage(named:"icon_load_data")!  : self.errorData
-        return image
-    }
-    var refreshAnimation: CAAnimation{
-        let animation = CABasicAnimation(keyPath: "transform")
-        animation.fromValue = NSValue(caTransform3D: CATransform3DIdentity)
-        animation.toValue = NSValue(caTransform3D: CATransform3DMakeRotation(CGFloat(Double.pi / 2), 0, 0, 1.0))
-        animation.duration = 0.25
-        animation.isCumulative = true
-        animation.repeatCount = MAXFLOAT
-        return animation
-    }
-    var refreshButton: UIButton{
-        let button = UIButton(type: .custom)
-        var image = UIImage(named: "icon_load_button")
-        let rectInsets = UIEdgeInsets.init(top: 8, left: -60, bottom: 8, right: -60)
-        let capInsets = UIEdgeInsets.init(top: 10, left: 10, bottom: 10, right: 10)
-        image = image!.resizableImage(withCapInsets: capInsets, resizingMode: .stretch).withAlignmentRectInsets(rectInsets)
-        
-        
-        image = image?.stretchableImage(withLeftCapWidth: Int((image?.size.width)!/2), topCapHeight: Int((image?.size.height)!/2))
-        
-        button .setBackgroundImage(image, for: .normal)
-        let paragraph = NSMutableParagraphStyle()
-        paragraph.lineBreakMode = .byWordWrapping;
-        paragraph.alignment = .center;
-        
-        let att : [NSAttributedString.Key : Any] = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 16),NSAttributedString.Key.paragraphStyle : paragraph,NSAttributedString.Key.foregroundColor : UIColor.white]
-        let attString = NSAttributedString.init(string: "Try Again", attributes: att    )
-        button.setAttributedTitle(attString, for: .normal)
-        return button
     }
 }

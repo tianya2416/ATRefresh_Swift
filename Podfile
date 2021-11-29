@@ -6,19 +6,18 @@ inhibit_all_warnings!
 
 target :ATRefresh_Swift  do
   
-  pod 'EmptyDataSet-Swift', '~> 5.0.0'
+  pod 'EmptyDataSet-Swift'
   pod 'MJRefresh'
+  pod 'SnapKit'
+  pod 'ATKit_Swift'
+  pod 'SwiftyJSON'
+  pod 'HandyJSON'
+  pod 'Moya'
+  pod 'Kingfisher'
   
-    pod 'SnapKit'
-    pod 'ATKit_Swift'
-    pod 'SwiftyJSON'
-    pod 'HandyJSON'
-    pod 'Moya'
-    pod 'Kingfisher'
-    
-    pod 'Alamofire'
-    
-    pod 'SQLite.swift'
+  pod 'Alamofire'
+  
+  pod 'SQLite.swift'
 
     
 end
