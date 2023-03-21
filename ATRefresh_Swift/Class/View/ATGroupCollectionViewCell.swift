@@ -15,7 +15,7 @@ class ATGroupCollectionViewCell: UICollectionViewCell {
     var model : ATGroupModel = ATGroupModel(){
         didSet{
             let item = model ;
-            self.imageV.setGkImageWithURL(url: item.cover ?? "");
+            self.imageV.setGkImageWithURL(url: item.imgsrc ?? "");
             self.titleLba.text = item.title;
         }
     }

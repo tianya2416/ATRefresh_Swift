@@ -2,7 +2,7 @@ PODS:
   - Alamofire (5.1.0)
   - ATKit_Swift (0.1.3)
   - EmptyDataSet-Swift (5.0.0)
-  - HandyJSON (5.0.1)
+  - HandyJSON (5.0.2)
   - Kingfisher (5.13.4):
     - Kingfisher/Core (= 5.13.4)
   - Kingfisher/Core (5.13.4)
@@ -30,7 +30,7 @@ DEPENDENCIES:
   - SwiftyJSON
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
     - Alamofire
     - ATKit_Swift
     - EmptyDataSet-Swift
@@ -46,7 +46,7 @@ SPEC CHECKSUMS:
   Alamofire: 9d5c5f602928e512395b30950c5984eca840093c
   ATKit_Swift: fa8cfd73aa7bce7748a9bf18b3f4d999a502b467
   EmptyDataSet-Swift: eb382c0c87a2d9c678077385a595cec52da38171
-  HandyJSON: d45b8415c501e3affc59ca9762c1197ff0feb646
+  HandyJSON: 9e4e236f5d2dbefad5155a77417bbea438201c03
   Kingfisher: d2279a7abece3c7f25a80cd2b7f363ca5cf3f44c
   MJRefresh: 53e3e3219f204425ee6d3e62e8733d3295944cd6
   Moya: 5b45dacb75adb009f97fde91c204c1e565d31916
@@ -54,6 +54,6 @@ SPEC CHECKSUMS:
   SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: 52c1d6ff23b93eb0045c50590893a2de8bd482f3
+PODFILE CHECKSUM: 998c8854494dc43486d93f1f9420ad695691e61e
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.11.2

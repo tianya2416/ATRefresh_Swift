@@ -3,6 +3,8 @@
     pod 'ATRefresh_Swift'
     ///或者可以这样
     pod 'ATRefresh_Swift',    :git => 'https://github.com/tianya24/ATRefresh_Swift.git'
+    //如果因为墙的问题 推荐下面
+    pod 'ATRefresh_Swift',    :git => 'https://gitee.com/tianya24/ATRefresh_Swift.git'
     
 2、ATRefresh_Swift使用方式:
 
@@ -65,13 +67,13 @@
 3、extends BaseRefershController 
     
     3、1 无下拉刷新、无上拉加载
-    self.setupRefresh(scrollView: self.tableView, options:.none);
+    self.setupRefresh(scrollView: self.tableView, options:.auto);
     
     3、2 有下拉刷新、无上拉加载
-    self.setupRefresh(scrollView: self.tableView, options:ATRefreshOption(rawValue: ATRefreshOption.header.rawValue|ATRefreshOption.autoHeader.rawValue));
+    self.setupRefresh(scrollView: self.tableView, options:[.header,.auto]);
     
     3、3 无下拉刷新、有上拉加载
-    self.setupRefresh(scrollView: self.tableView, options:ATRefreshOption(rawValue: ATRefreshOption.footer.rawValue|ATRefreshOption.autoFooter.rawValue));
+    self.setupRefresh(scrollView: self.tableView, options:[.footer,.auto]);
     
     3.4 有下拉刷新、有上拉加载
     self.setupRefresh(scrollView: self.tableView, options:.defaults);
@@ -100,4 +102,4 @@
        
 4、ATRefresh_ObjectC版本:
     
-[ObjectC版本] (https://github.com/tianya2416/ATRefresh_ObjectC.git)
+[ObjectC版本](https://github.com/tianya2416/ATRefresh_ObjectC.git)

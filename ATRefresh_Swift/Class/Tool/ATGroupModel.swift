@@ -10,24 +10,18 @@ import UIKit
 import HandyJSON
 
 class ATGroupModel: HandyJSON {
-    var bookId    :String?       = "";
-    var updateTime:TimeInterval  = 0;
-    var author:String? = "";
-    var cover:String?  = "";
-    var shortIntro :String? = ""
-    var title:String? = "";
-    var majorCate:String? = "";
-    var minorCate:String? = "";
-    var lastChapter:String? = "";
+    var TAGS  :String? = ""
+    var imgsrc:String?  = ""
+    var title :String? = ""
     
-    var retentionRatio :Float! = 0.0;
-    var latelyFollower :Int? = 0;
+    var topicid    :String?  = ""
+    var shortIntro :String? = ""
     required init() {}
     
     func mapping(mapper: HelpingMapper) {
         mapper <<<
-            self.bookId <-- ["bookId","_id"]
+            self.topicid <-- ["topicid","_id"]
         mapper <<<
-            self.shortIntro <-- ["shortIntro","longIntro"]
+            self.shortIntro <-- ["shortIntro","description"]
     }
 }

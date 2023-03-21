@@ -1,5 +1,5 @@
 //
-//  ATMainController.swift
+//  ATViewController.swift
 //  ATRefresh_Swift
 //
 //  Created by wangws1990 on 2020/5/9.
@@ -9,12 +9,12 @@
 import UIKit
 private let download      = "下拉刷新"
 private let upload        = "上拉加载"
-private let downandupload = "上拉下拉"
-private let none          = "无上下拉"
+private let downandupload = "下拉刷新上拉加载"
+private let none          = "不需要下拉刷新上拉加载"
 
 private let gridView = "网格"
-private let gridSQL  = "数据存储"
-class ATMainController: BaseTableViewController {
+private let gridSQL  = "数据库"
+class ATViewController: BaseTableViewController {
     lazy var listData : [String] = {
         return []
     }()
@@ -52,19 +52,19 @@ class ATMainController: BaseTableViewController {
             self.navigationController?.pushViewController(ATGroupConnectionController(), animated:true)
             break
         case gridSQL:
-            self.navigationController?.pushViewController(ATGroupCacheController(), animated:true)
+            self.navigationController?.pushViewController(ATSqlController(), animated:true)
             break
         case download:
-            UIViewController.rootTopPresentedController().navigationController?.pushViewController(ATGroupTableController(options: [.header,.autoHeader]), animated: true);
+            UIViewController.rootTopPresentedController().navigationController?.pushViewController(ATGroupTableController(options: [.header,.auto]), animated: true);
             break
         case upload:
-            UIViewController.rootTopPresentedController().navigationController?.pushViewController(ATGroupTableController(options: [.footer,.autoFooter]), animated: true);
+            UIViewController.rootTopPresentedController().navigationController?.pushViewController(ATGroupTableController(options: [.footer,.auto]), animated: true);
             break
         case downandupload:
             UIViewController.rootTopPresentedController().navigationController?.pushViewController(ATGroupTableController(options: .defaults), animated: true);
             break
         default:
-            UIViewController.rootTopPresentedController().navigationController?.pushViewController(ATGroupTableController(options: .none), animated: true);
+            UIViewController.rootTopPresentedController().navigationController?.pushViewController(ATGroupTableController(options:[.auto]), animated: true);
             break
         }
     }

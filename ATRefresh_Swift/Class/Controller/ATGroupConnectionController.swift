@@ -21,18 +21,18 @@ class ATGroupConnectionController: BaseConnectionController {
     }
     override func refreshData(page: Int) {
         let size : Int = 20;
-        ApiMoya.apiMoyaRequest(target: .apiClassify(page: page, size: size, group: "male", name: "玄幻"), sucesss: { (json) in
+        ApiMoya.apiMoyaRequest(target: .apiClassify(page: page, size: size)) { object in
             if page == 1{
                 self.listData.removeAll();
             }
-            let list = [ATGroupModel].deserialize(from: json.rawString()) ?? []
+            let list = [ATGroupModel].deserialize(from: object["T1348647853363"].rawString()) ?? []
             if let datas = list as? [ATGroupModel]{
                 self.listData.append(contentsOf: datas)
             }
             self.collectionView.reloadData();
             self.endRefresh(more: list.count > 0)
-        }) { (error) in
-            self.endRefreshFailure(error: error);
+        } failure: { error in
+            self.endRefreshFailure(error: error)
         }
     }
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

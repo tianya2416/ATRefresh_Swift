@@ -1,5 +1,5 @@
 //
-//  ATGroupSearchController.swift
+//  ATKeywordController.swift
 //  ATRefresh_Swift
 //
 //  Created by wangws1990 on 2020/11/30.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ATGroupSearchController: BaseTableViewController {
+class ATKeywordController: BaseTableViewController {
 
     lazy var listData : [String] = {
         return []
@@ -62,16 +62,18 @@ class ATGroupSearchController: BaseTableViewController {
             make.left.right.bottom.equalToSuperview()
             make.top.equalTo(self.textField.snp.bottom).offset(15)
         }
-        self.setupRefresh(scrollView: self.tableView, options: .none)
+        self.setupRefresh(scrollView: self.tableView, options: .defaults)
     }
     override func refreshData(page: Int) {
         ApiSearchQueue.searchData(page: 1, size: 30) { (listData) in
-            if (page == 1){
-                self.listData.removeAll()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                if (page == 1){
+                    self.listData.removeAll()
+                }
+                self.listData.append(contentsOf: listData)
+                self.tableView.reloadData()
+                self.endRefresh(more: listData.count >= 30)
             }
-            self.listData.append(contentsOf: listData)
-            self.tableView.reloadData()
-            self.endRefresh(more: listData.count >= 30)
         }
 
     }
@@ -121,17 +123,17 @@ class ATFavController: BaseTableViewController {
     
     override func refreshData(page: Int) {
         ApiDataQueue.searchData(page: page,size:20) { (json) in
-            sleep(2)
-            if page == 1{
-                self.listData.removeAll()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                if page == 1{
+                    self.listData.removeAll()
+                }
+                let list = [ATGroupModel].deserialize(from: json.rawString()) ?? []
+                if let datas = list as? [ATGroupModel]{
+                    self.listData.append(contentsOf: datas)
+                }
+                self.tableView.reloadData()
+                self.endRefresh(more: list.count >= 20)
             }
-            let list = [ATGroupModel].deserialize(from: json.rawString()) ?? []
-            if let datas = list as? [ATGroupModel]{
-                self.listData.append(contentsOf: datas)
-            }
-            self.tableView.reloadData()
-            self.endRefresh(more: list.count >= 20)
-            
         }
     }
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -156,7 +158,7 @@ class ATFavController: BaseTableViewController {
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
        let row = UITableViewRowAction.init(style: .default, title: "删除") { (row, inde) in
            let key = self.listData[indexPath.row]
-        ApiDataQueue.deleteData(primaryId: key.bookId ?? "") { (finish) in
+           ApiDataQueue.deleteData(primaryId: key.topicid ?? "") { (finish) in
             if(finish){
                 self.listData.remove(at: indexPath.row)
                 self.tableView.reloadData()
@@ -175,4 +177,25 @@ class ATFavController: BaseTableViewController {
         let att : NSAttributedString = NSAttributedString(string:"副标题提示,副标题提示,副标题提示,副标题提示,副标题提示\r\n", attributes:(dic))
         return att
     }
+    var refreshButton: UIButton{
+        let button = UIButton(type: .custom)
+        var image = UIImage(named: "icon_load_button")
+        let rectInsets = UIEdgeInsets.init(top: 8, left: -60, bottom: 8, right: -60)
+        let capInsets = UIEdgeInsets.init(top: 10, left: 10, bottom: 10, right: 10)
+        image = image!.resizableImage(withCapInsets: capInsets, resizingMode: .stretch).withAlignmentRectInsets(rectInsets)
+        
+        
+        image = image?.stretchableImage(withLeftCapWidth: Int((image?.size.width)!/2), topCapHeight: Int((image?.size.height)!/2))
+        
+        button .setBackgroundImage(image, for: .normal)
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.lineBreakMode = .byWordWrapping;
+        paragraph.alignment = .center;
+        
+        let att : [NSAttributedString.Key : Any] = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 16),NSAttributedString.Key.paragraphStyle : paragraph,NSAttributedString.Key.foregroundColor : UIColor.white]
+        let attString = NSAttributedString(string: "Try Again", attributes: att    )
+        button.setAttributedTitle(attString, for: .normal)
+        return button
+    }
+
 }

@@ -10,16 +10,15 @@ import Foundation
 import UIKit
 
 public struct ATRefreshOption :OptionSet {
-    public let rawValue : Int
     public init(rawValue: Int) {
         self.rawValue = rawValue
     }
-    public static var none          : ATRefreshOption{return ATRefreshOption(rawValue: 0)}
-    public static var header        : ATRefreshOption{return ATRefreshOption(rawValue: 1<<0)}
-    public static var footer        : ATRefreshOption{return ATRefreshOption(rawValue: 1<<1)}
-    public static var autoHeader    : ATRefreshOption{return ATRefreshOption(rawValue: 1<<2)}
-    public static var autoFooter    : ATRefreshOption{return ATRefreshOption(rawValue: 1<<3)}
-    public static var defaults      : ATRefreshOption{return ATRefreshOption(rawValue: header.rawValue|autoHeader.rawValue|footer.rawValue|autoFooter.rawValue)}
+    public var rawValue : Int
+    public static var none          : ATRefreshOption{return ATRefreshOption(rawValue: 1)}
+    public static var auto          : ATRefreshOption{return ATRefreshOption(rawValue: none.rawValue<<1)}
+    public static var header        : ATRefreshOption{return ATRefreshOption(rawValue: none.rawValue<<2)}
+    public static var footer        : ATRefreshOption{return ATRefreshOption(rawValue: none.rawValue<<3)}
+    public static var defaults      : ATRefreshOption{return ATRefreshOption(rawValue: header.rawValue|footer.rawValue|auto.rawValue)}
 }
 
 @objc public protocol ATRefreshDataSource : NSObjectProtocol {
@@ -63,12 +62,12 @@ extension UIImage{
     class func imageWithColor(color:UIColor) -> UIImage{
          let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
          UIGraphicsBeginImageContext(rect.size)
-         let context = UIGraphicsGetCurrentContext()
-         context!.setFillColor(color.cgColor)
-         context!.fill(rect)
+         guard let context = UIGraphicsGetCurrentContext() else { return UIImage() }
+         context.setFillColor(color.cgColor)
+         context.fill(rect)
          let image = UIGraphicsGetImageFromCurrentImageContext()
          UIGraphicsEndImageContext()
-         return image!
+         return image ?? UIImage()
      }
 }
 

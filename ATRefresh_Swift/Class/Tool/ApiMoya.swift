@@ -12,7 +12,7 @@ import SwiftyJSON
 
 public enum ApiMoya{
     case apiHome
-    case apiClassify(page: Int, size : Int,group:String,name:String)
+    case apiClassify(page: Int, size : Int)
 }
 extension ApiMoya : TargetType{
     public var method: Moya.Method {
@@ -25,8 +25,8 @@ extension ApiMoya : TargetType{
     public var task: Task {
             switch self {
             
-            case let .apiClassify(page:page, size: size, group: group, name: name):
-                return .requestParameters(parameters: ["gender":group,"major":name,"start":String((page - 1)*size + 1  ),"limit":String(size),"type":"hot","minor":""], encoding: URLEncoding.default);
+            case .apiClassify:
+                return .requestParameters(parameters: [:], encoding: URLEncoding.default);
             case .apiHome:
                 return .requestParameters(parameters: [:], encoding:URLEncoding.default);
             }
@@ -37,13 +37,13 @@ extension ApiMoya : TargetType{
         return [:]
     }
     public var baseURL: URL {
-        return URL(string: "https://api.zhuishushenqi.com")!
+        return URL(string: "http://c.m.163.com")!
     }
     
     public var path: String {
         switch self {
-        case .apiClassify:
-            return "book/by-categories";
+        case let .apiClassify(page: page, size: size):
+            return "nc/article/headline/T1348647853363/\((page - 1)*size)-\(size).html";
         case .apiHome:
             return "";
         }
@@ -55,13 +55,7 @@ extension ApiMoya : TargetType{
                 switch result{
                 case let .success(respond):
                     let json = JSON(respond.data)
-                    //print(json);
-                    if json["ok"] == true {
-                        sucesss(json["books"])
-                    }else{
-                    
-                        failure((json["msg"].rawString() ?? ""))
-                    }
+                    sucesss(json)
                     break;
                 case let .failure(error):
                     failure(error.errorDescription!)

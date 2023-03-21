@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import Kingfisher
 extension UIImageView{
     public func setGkImageWithURL(url:String){
         
@@ -17,12 +17,13 @@ extension UIImageView{
         self.setGkImageWithURL(url: url, placeholder: placeholder, unencode: true);
     }
     public func setGkImageWithURL(url:String,placeholder:UIImage,unencode:Bool){
-        var str : String!;
-        if url.hasPrefix("/agent/"){
-            str = url.replacingOccurrences(of: "/agent/", with: "");
-        }
-        str = unencode ? str.removingPercentEncoding : str;
-        self.kf.setImage(with: URL.init(string: str), placeholder: placeholder)
+//        var str : String!;
+//        if url.hasPrefix("/agent/"){
+//            str = url.replacingOccurrences(of: "/agent/", with: "");
+//        }
+//        str = unencode ? str.removingPercentEncoding : str;
+        //kf 多图会有性能问题
+        self.kf.setImage(with: URL(string: url), placeholder: placeholder)
     }
     
 }

@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Kingfisher
 class ATGroupTableViewCell: UITableViewCell {
     @IBOutlet weak var titleLab: UILabel!
     
@@ -18,10 +17,10 @@ class ATGroupTableViewCell: UITableViewCell {
     var model : ATGroupModel?{
         didSet{
             guard let item = model else { return }
-            self.imageV.setGkImageWithURL(url: item.cover ?? "");
+            self.imageV.setGkImageWithURL(url: item.imgsrc ?? "");
             self.titleLab.text = item.title;
             self.subTitleLab.text = item.shortIntro;
-            self.nickNameLab.text = item.author;
+            self.nickNameLab.text = item.TAGS;
         }
     }
     override func awakeFromNib() {
@@ -34,7 +33,7 @@ class ATGroupTableViewCell: UITableViewCell {
     }
 
     @IBAction func favAction(_ sender: UIButton) {
-        ApiDataQueue.insertData(primaryId: self.model?.bookId ?? "", content: self.model?.toJSONString() ?? "") { (finish) in
+        ApiDataQueue.insertData(primaryId: self.model?.topicid ?? "", content: self.model?.toJSONString() ?? "") { (finish) in
             if (finish){
                 print("收藏成功");
             }
